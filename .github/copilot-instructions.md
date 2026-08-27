@@ -1,59 +1,24 @@
-This is an Azure Developer CLI (AZD) solution accelerator for deploying Azure resources using modern Infrastructure as Code practices.
+# Developer Workbench MCP
 
-## Azure Developer CLI Overview
+This repository is a workshop for building a local TypeScript MCP server that collects approved developer-learning links into a browser-importable HTML file.
 
-Azure Developer CLI (azd) is a developer-centric command-line interface (CLI) tool for creating Azure applications. It provides best practices and conventions for:
-- Infrastructure as Code with Bicep templates
-- Application deployment and lifecycle management
-- Integration with CI/CD pipelines
-- Local development environment setup
+## Project rules
 
-## Key Principles
+- Use Node.js 22 or later, strict TypeScript, Zod validation, and the official MCP TypeScript SDK.
+- Keep the MCP server deterministic, local, secret-free, and narrowly scoped.
+- Never write diagnostics or logs to stdout. Stdio stdout is reserved for MCP protocol messages; use stderr for diagnostics.
+- Accept only HTTPS URLs and reject malformed, oversized, or ambiguous input.
+- Always escape user-controlled values before writing HTML.
+- Write only to `samples/developer-workbench-mcp/output/developer-learning-bookmarks.html`; never accept an arbitrary output path.
+- Preserve existing categories and links, prevent canonical URL duplicates, and write through a temporary file followed by rename.
+- Never modify Chrome or Edge profiles, use browser automation, or store credentials.
 
-The key principles you should adopt when creating Azure Developer CLI solution accelerators:
+## Workflow
 
-### Infrastructure as Code
-- Use Azure Verified Modules (AVM) for all resources, including networking, security, and compute resources - wherever possible.
-- Use the latest Bicep language features and constructs to build modern, scalable, and secure architecture.
-- Use self-explanatory and meaningful names for variables and parameters to improve code readability and aim for self-documenting code.
-- Always provide descriptions of parameters and outputs.
-- Follow the Azure Developer CLI template structure and conventions.
+1. Ask clarifying questions before implementation when requirements are incomplete.
+2. Produce and review a plan covering schemas, security boundaries, failure modes, tests, and validation.
+3. Make the smallest focused change.
+4. Run `npm test`, `npm run typecheck`, and `npm run lint` from `samples/developer-workbench-mcp`.
+5. Report actual command output; do not claim validation that was not run.
 
-### Azure Well-Architected Framework
-- Prioritize the Azure Well-Architected Framework pillars in this order: Security, Operational Excellence, Performance Efficiency, Reliability, and Cost Optimization.
-- Implement security best practices including managed identities, key vault integration, and network security.
-- Design for monitoring and observability with Application Insights and Log Analytics.
-- Consider cost optimization through appropriate SKUs and auto-scaling configurations.
-
-### Development Experience
-- Provide clear documentation and getting started guides.
-- Include comprehensive parameter files for different environments (dev, test, prod).
-- Implement proper error handling and validation in scripts.
-- Use GitHub Actions or Azure DevOps for CI/CD pipeline automation.
-
-## Implementation Guidance
-
-When creating Infrastructure as Code for Azure Developer CLI solution accelerators:
-
-### File Structure
-- Follow the standard AZD template structure with `infra/`, `src/`, and root configuration files
-- Use `azure.yaml` for service and pipeline configuration
-- Organize Bicep templates in logical modules within the `infra/` directory
-- Include environment-specific parameter files
-
-### Best Practices
-- Provide comprehensive guidance and best practices for developing reusable and reliable Infrastructure as Code using Bicep and PowerShell
-- Prioritize Azure Well-Architected Framework pillars in this order: Security, Operational Excellence, Performance Efficiency, Reliability, and Cost Optimization
-- Build CI/CD pipelines using GitHub Actions with the latest task versions wherever possible
-- Include proper testing and validation steps in deployment pipelines
-- Implement proper secret management and secure configuration practices
-
-### Resource Naming and Tagging
-- Use consistent naming conventions across all resources
-- Implement comprehensive tagging strategy for cost management and governance
-- Use Azure resource abbreviations as defined in Microsoft naming conventions
-
-## Tools Integration
-
-- @azure Rule - Use Azure Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_get_code_gen_best_practices` tool if available.
-- @azure Rule - Use Azure Deployment Best Practices: When deploying to Azure or preparing applications for deployment to Azure, invoke your `azure_get_deployment_best_practices` tool if available.
+The generated HTML is an export artifact for manual import into Chrome or Edge. It is not a live browser integration.

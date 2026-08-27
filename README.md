@@ -1,80 +1,75 @@
-# GitHub Copilot Workshop for Microsoft Student Accelerator 2025
+# GitHub Copilot Agentic Development Workshop
 
-Welcome, future software rockstars!
+This Microsoft Student Accelerator workshop teaches a disciplined agentic-development loop:
 
-Ready to launch your career and code like a pro? The **Microsoft Student Accelerator 2025** is your backstage pass to the world of AI-powered development! Whether you’re about to toss your graduation cap or just dreaming of your first big tech job, this workshop is your ticket to building the next generation of apps—without writing a single line of code yourself.
+**context -> clarify -> challenge assumptions -> plan -> implement -> review -> validate**
 
-In this hands-on, high-energy lab, you’ll team up with GitHub Copilot and Copilot Chat to create real applications from scratch. You’ll be the architect, the visionary, and the creative force—while Copilot handles the heavy lifting. It’s not just about learning tools; it’s about reimagining what it means to be a developer in the age of AI.
+The shared application is a local TypeScript MCP server that collects approved developer-learning links from Microsoft Learn and Context7 into a browser-importable HTML bookmark file.
 
-So buckle up, bring your ideas, and get ready to experience the future of software engineering. Let’s build, innovate, and have some serious fun along the way!
+## Core tracks
 
-> [!IMPORTANT]
-> Before you attend the workshop, make sure you’ve checked off the prerequisites below so you can dive right in and make the most of this experience. ✅
+The guided workshop supports both:
 
-## Prerequisites 📝
+- **VS Code Insiders** with Agent Mode and workspace MCP configuration.
+- **Copilot CLI** with the same repository, prompts, and local MCP server.
 
-Before you join the workshop, please ensure you have the following set up on your machine:
+The concepts and application are shared. The workshop site provides client-specific commands where they differ.
 
-- ✅ [GitHub account](https://github.com/) 🐙
-- ✅ [Sign-up for GitHub Copilot Free](https://github.com/settings/copilot/features)
-    ![GitHub Copilot Free Sign-up](images/github-copilot-free-signup.png)
-- ✅ [Git installed](https://git-scm.com/)
-- ✅ [GitHub CLI installed](https://cli.github.com/) 🛠️
-- ✅ [Visual Studio Code installed](https://code.visualstudio.com/) 💻
-- ✅ [GitHub Copilot Extension installed in Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) 🤖
-- ✅ [GitHub Copilot Chat extension installed in Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) 💬
-    ![GitHub Copilot Chat Extensions](images/vscode-github-copilot-extensions.png)
-- 🛠️ (Optional) Any other Visual Studio Code extensions you’d like to use based on your preferred application stack (Prettier, ESLint, Python, etc.)
-- 📖 (Optional) Complete the [Accelerate app development by using GitHub Copilot](https://learn.microsoft.com/en-us/training/paths/accelerate-app-development-using-github-copilot/) learning path to familiarize yourself with GitHub Copilot and Copilot Chat.
+Copilot Student, Pro, Pro+, and Max are supported. Business and Enterprise require organization policy approval for MCP and Copilot CLI. Copilot Free can complete the learning outcomes using documented prompt fallbacks where interactive Skill invocation is unavailable. No numeric Copilot Free AI-credit allowance is assumed.
 
-> [!IMPORTANT]
-> Make sure you have signed into your GitHub account in Visual Studio Code so that GitHub Copilot is activated.
-> Follow [these instructions](https://code.visualstudio.com/docs/copilot/setup) to ensure Github Copilot is enabled in Visual Studio Code.
+## Optional exploration
 
-![Signin to Github in Visual Studio Code](images/vscode-signin-to-github.png)
+Students who are already confident with VS Code Insiders and Copilot CLI are encouraged to install GitHub Copilot App and try the completed lab independently. The workshop does not provide Copilot App setup or usage instructions. The optional bookmark viewer remains separate from the core lab.
 
-## The Goal 🎯
+## Prerequisites
 
-The goal of this workshop is to empower you to build a fully functional application using Github Copilot and Copilot Chat. You’ll learn how to leverage AI to generate code, brainstorm ideas, and create specifications—all while collaborating with Copilot in real-time. By the end of the session, you'll be on your way to having a working application and a deeper understanding of how AI can transform your development process.
+Complete these before the timed session:
 
-The key to using AI to create production ready applications is to provide grounding and context to the AI. This workshop will show you how to do that using the `simple_app_idea_generator` and `specification` chat modes.
+- GitHub account and an active Copilot plan.
+- [VS Code Insiders](https://code.visualstudio.com/insiders/) or [Copilot CLI](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli).
+- [Git](https://git-scm.com/) and Node.js 22 or later.
+- A local clone of this repository.
+- A trusted workspace with MCP server approval available.
 
-## Workshop Agenda 📅
+For npm-based Copilot CLI installation, use `npm install -g @github/copilot` with Node.js 22 or later.
 
-1. **Reimagining Development with Agentic DevOps** (15 mins) - 📖 [**Detailed Instructions**](workshop-step-1-reimagining-development-with-agentic-devops.md)
-   - GitHub Copilot overview
-   - Building your own AI centric engineering process
+## Start the MCP project
 
-2. **Agent Mode & Custom Chat Modes** (25 mins) - 📖 [**Detailed Instructions**](workshop-step-2-agent-mode-and-custom-chat-modes.md)
-   - Fork this repository to your GitHub account
-   - Clone your fork of this repository using GitHub CLI `gh repo clone <your-username>/github-copilot-for-msa`
-   - Come up with your app idea with the `simple_app_idea_generator` chat mode
-   - Discusss your idea with `mentor` chat mode and refine it, including deciding on the technology stack
+```text
+cd samples/developer-workbench-mcp
+npm ci
+npm test
+npm run typecheck
+npm run lint
+```
 
-3. **Prompt Files** (20 mins) - 📖 [**Detailed Instructions**](workshop-step-3-prompt-files.md)
-   - Create your app specfication with the `/create_specification` custom prompt file
-   - Create your implementation plan using a custom prompt file `/create_implementation_plan`.
-   - Run a last review of your plan and specification with the `principal_software_engineer` chat mode
+The local server exposes:
 
-4. **Build your application** (25 mins) - 📖 [**Detailed Instructions**](workshop-step-4-build-your-application.md)
-   - (Optional) Create a new repo and use the `#new` Agent tool to scaffold your application first
-   - Ask Copilot in Agent mode to build your application from the Specification and Implementation Plan you created.
+- `add_learning_links`: validates one to five HTTPS links and writes `output/developer-learning-bookmarks.html`.
+- `list_learning_links`: inspects the current collection before additions are proposed.
 
-5. **Realworld Scenarios** (20 mins) - 📖 [**Detailed Instructions**](workshop-step-5-realworld-scenarios.md)
-   - Explaining code with Copilot
-   - Generating unit tests for your application
-   - Refactoring existing code with Copilot
+The server never edits Chrome or Edge profiles, accepts arbitrary output paths, stores secrets, or writes diagnostics to MCP stdout.
 
-6. **Next Steps** (5 mins) - 📖 [**Detailed Instructions**](workshop-step-6-next-steps.md)
-    - AI driven development will be a key part of your future career.
-    - It is critical to keep developing your AI skills and knowledge and to lead the way in your future teams.
+## Workshop journey
 
-## Resources 📚
+1. Reimagine development as an agentic engineering loop.
+2. Run the intentionally weak bookmark-MCP request.
+3. Ground the agent with Microsoft Learn and Context7.
+4. Ask clarifying questions and challenge an assumption.
+5. Review the implementation plan with the rubber-duck rubric.
+6. Implement the MCP server and run focused tests.
+7. Add repository guidance, a constrained custom agent, and a code-quality review Skill.
+8. Approve proposed links, generate the HTML export, and import it manually through Chrome or Edge.
 
-- [GitHub Copilot Assets Library](https://github.com/PlagueHO/github-copilot-assets-library) - Curated collection of prompts and examples
-- [GitHub Copilot Awesome-Copilot Library](https://github.com/github/awesome-copilot) - Community-curated resources and examples
-- [GitHub Copilot Chat Documentation](https://docs.github.com/en/copilot/chat) 📖
-- [Visual Studio Code Documentation](https://code.visualstudio.com/docs) 📖
-- [Microsoft Learn: Accelerate app development by using GitHub Copilot](https://learn.microsoft.com/en-us/training/paths/accelerate-app-development-using-github-copilot/) 📖
-- [GitHub Copilot Custom Prompt Files](https://code.visualstudio.com/docs/copilot/copilot-customization#_prompt-files-experimental) 📖
-- [GitHub Copilot Custom Chat Modes](https://code.visualstudio.com/docs/copilot/chat/chat-modes#_custom-chat-modes) 📖
+The detailed workshop steps are being rebuilt around this sequence. The implementation source is in [samples/developer-workbench-mcp](samples/developer-workbench-mcp/).
+
+## MCP configuration
+
+The workspace configuration in [.vscode/mcp.json](.vscode/mcp.json) includes Microsoft Learn, Context7, the local bookmark server, and GitHub MCP. The core exercise should use only the servers needed for the current step and require approval before a write tool call.
+
+## Design boundaries
+
+- The output is a Netscape-format HTML export, not a live browser integration.
+- Link metadata is validated and HTML-escaped.
+- Writes preserve existing links, prevent canonical URL duplicates, and use a temporary file followed by rename.
+- Azure deployment, databases, browser extensions, native messaging, OAuth, and cloud-hosted MCP are outside the core workshop.

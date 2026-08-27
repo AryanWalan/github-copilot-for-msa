@@ -1,0 +1,42 @@
+name: Deploy workshop site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/workshop-site/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/workshop-site/package-lock.json
+      - run: npm ci
+        working-directory: apps/workshop-site
+      - run: npm run build
+        working-directory: apps/workshop-site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/workshop-site/dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
