@@ -15,9 +15,9 @@ or SDK API details. Inspect existing bookmarks, explain why each link is useful,
 and show the proposed additions. Do not save anything until I explicitly approve.
 ```
 
-Inspect the proposed URLs, categories, titles, and descriptions. Approve the `add_learning_links` tool call only after confirming the result belongs in your bookmark collection.
-
-Then open `samples/developer-workbench-mcp/output/developer-learning-bookmarks.html` and import it manually through Chrome or Edge's bookmark manager.
+- [ ] Inspect the proposed URLs, categories, titles, and descriptions.
+- [ ] Approve the `add_learning_links` tool call only after confirming the result belongs in your bookmark collection.
+- [ ] Open `samples/developer-workbench-mcp/output/developer-learning-bookmarks.html` and import it manually through Chrome or Edge's bookmark manager.
 
 ## Improve the implementation
 
@@ -37,7 +37,8 @@ Copilot Student and paid plans: invoke `/code-quality-review`.
 
 Copilot Free fallback: invoke `/code-quality-review-fallback` or paste the contents of [.github/prompts/code-quality-review-fallback.prompt.md](.github/prompts/code-quality-review-fallback.prompt.md).
 
-Address one valid finding, then rerun the same focused validation commands.
+- [ ] Address one valid finding.
+- [ ] Rerun the same focused validation commands.
 
 ## Checkpoint
 

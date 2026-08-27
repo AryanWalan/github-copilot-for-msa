@@ -27,14 +27,14 @@ not making assumptions. Then ask one question that challenges my central solutio
 assumption. Do not edit files.
 ```
 
-Discuss the answers before continuing. The required decisions are:
+Discuss the answers before continuing. Confirm each required decision:
 
-1. The output path is fixed; the tool never accepts a path from the caller.
-2. Links must use HTTPS and have bounded title, category, and description fields.
-3. User-controlled values are HTML-escaped.
-4. Existing links and categories are preserved; canonical URLs are not duplicated.
-5. Writes use a temporary file followed by rename.
-6. The agent must show candidate links and obtain approval before using a write tool.
+- [ ] Confirm the output path is fixed; the tool never accepts a path from the caller.
+- [ ] Confirm links must use HTTPS and have bounded title, category, and description fields.
+- [ ] Confirm user-controlled values are HTML-escaped.
+- [ ] Confirm existing links and categories are preserved and canonical URLs are not duplicated.
+- [ ] Confirm writes use a temporary file followed by rename.
+- [ ] Confirm the agent must show candidate links and obtain approval before using a write tool.
 
 ## Request a plan
 
@@ -52,7 +52,8 @@ Copilot Student and paid plans: invoke `/rubber-duck` and provide the plan.
 
 Copilot Free fallback: invoke `/rubber-duck-fallback` or paste the contents of [.github/prompts/rubber-duck-fallback.prompt.md](.github/prompts/rubber-duck-fallback.prompt.md) with the plan.
 
-Revise the plan to address valid findings. Approve implementation only when it names the changed files and validation commands.
+- [ ] Revise the plan to address valid findings.
+- [ ] Approve implementation only when it names the changed files and validation commands.
 
 ## Checkpoint
 

@@ -77,10 +77,10 @@ In the upcoming workshop steps, you'll experience this transformation firsthand:
 
 As you move into the hands-on portions, consider:
 
-- How might AI change the way you approach problem-solving?
-- What aspects of development do you most want AI to help with?
-- How can you leverage AI while maintaining your creative control?
-- What new skills do you need to develop for effective AI collaboration?
+- [ ] Reflect on how AI might change the way you approach problem-solving.
+- [ ] Identify the aspects of development you most want AI to help with.
+- [ ] Consider how you can leverage AI while maintaining your creative control.
+- [ ] Identify the new skills you need for effective AI collaboration.
 
 ---
 

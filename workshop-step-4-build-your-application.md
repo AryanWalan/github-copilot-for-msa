@@ -18,12 +18,12 @@ Stop if a requirement is unclear.
 
 Review the proposed file changes before allowing them. The first cut must provide:
 
-- An `add_learning_links` MCP tool for one to five links.
-- HTTPS validation and bounded title, category, and description fields.
-- A Netscape HTML export below `Microsoft Student Accelerator > Developer Learning > <category>`.
-- Escaped user-controlled HTML.
-- The fixed `output/developer-learning-bookmarks.html` location.
-- No diagnostics on standard output.
+- [ ] An `add_learning_links` MCP tool for one to five links.
+- [ ] HTTPS validation and bounded title, category, and description fields.
+- [ ] A Netscape HTML export below `Microsoft Student Accelerator > Developer Learning > <category>`.
+- [ ] Escaped user-controlled HTML.
+- [ ] The fixed `output/developer-learning-bookmarks.html` location.
+- [ ] No diagnostics on standard output.
 
 ## Run the validation loop
 

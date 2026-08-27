@@ -8,20 +8,20 @@ You have completed a small but complete agentic-development loop: establish cont
 
 Use this sequence for the next feature you build:
 
-1. State the user outcome and constraints.
-2. Ground the agent with the authoritative sources and repository files it needs.
-3. Ask questions and invite one challenge to your assumptions.
-4. Review a plan covering files, failure modes, security, tests, and validation.
-5. Make a small change, run a focused check, and use its actual output for the next decision.
-6. Use repository instructions, custom agents, Skills, and MCP tools as reusable context rather than one-off prompts.
+- [ ] State the user outcome and constraints.
+- [ ] Ground the agent with the authoritative sources and repository files it needs.
+- [ ] Ask questions and invite one challenge to your assumptions.
+- [ ] Review a plan covering files, failure modes, security, tests, and validation.
+- [ ] Make a small change, run a focused check, and use its actual output for the next decision.
+- [ ] Use repository instructions, custom agents, Skills, and MCP tools as reusable context rather than one-off prompts.
 
 ## Suggested extensions
 
-- Add a category or link-quality policy to the bookmark server and its tests.
-- Add a read-only report that identifies links by category before a curator proposes more.
-- Improve the `learning-curator` agent's selection criteria, while keeping its write-approval gate.
-- Create a new Skill for a repeated workflow in one of your own repositories.
-- Explore the completed lab in GitHub Copilot App independently once you are comfortable with VS Code Insiders and Copilot CLI. This workshop deliberately does not provide Copilot App instructions.
+- [ ] Add a category or link-quality policy to the bookmark server and its tests.
+- [ ] Add a read-only report that identifies links by category before a curator proposes more.
+- [ ] Improve the `learning-curator` agent's selection criteria, while keeping its write-approval gate.
+- [ ] Create a new Skill for a repeated workflow in one of your own repositories.
+- [ ] Explore the completed lab in GitHub Copilot App independently once you are comfortable with VS Code Insiders and Copilot CLI. This workshop deliberately does not provide Copilot App instructions.
 
 ## Continue learning
 
