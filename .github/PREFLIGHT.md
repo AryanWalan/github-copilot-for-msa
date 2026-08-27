@@ -10,3 +10,5 @@ Complete this before the session:
 - [ ] Confirm that `add_learning_links` and `list_learning_links` are visible.
 
 GitHub Copilot App is optional self-directed exploration for students already comfortable with both core tracks. This workshop does not include Copilot App instructions.
+
+- [ ] Optional: Install GitHub Copilot App only if you are already confident with VS Code Insiders and Copilot CLI. Use it to explore the completed lab independently after the session.

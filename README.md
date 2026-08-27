@@ -52,11 +52,11 @@ The server never edits Chrome or Edge profiles, accepts arbitrary output paths, 
 
 ## Workshop journey
 
-1. Reimagine development as an agentic engineering loop.
-2. Run the intentionally weak bookmark-MCP request.
-3. Ground the agent with Microsoft Learn and Context7.
-4. Ask clarifying questions and challenge an assumption.
-5. Review the implementation plan with the rubber-duck rubric.
+1. Complete [setup and prerequisites](workshop-step-0-setup-and-prerequisites.md).
+2. Reimagine development as an agentic engineering loop.
+3. Run the intentionally weak bookmark-MCP request.
+4. Ground the agent with Microsoft Learn and Context7.
+5. Ask clarifying questions, challenge an assumption, and review the implementation plan.
 6. Implement the MCP server and run focused tests.
 7. Add repository guidance, a constrained custom agent, and a code-quality review Skill.
 8. Approve proposed links, generate the HTML export, and import it manually through Chrome or Edge.

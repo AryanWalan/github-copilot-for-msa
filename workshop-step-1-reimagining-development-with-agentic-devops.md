@@ -66,6 +66,7 @@ How can you be a better context engineer? AI is not magic – providing context 
 
 In the upcoming workshop steps, you'll experience this transformation firsthand:
 
+1. **Step 0**: [Setup and prerequisites](workshop-step-0-setup-and-prerequisites.md)
 1. **Step 2**: [Start with an incomplete request](workshop-step-2-agent-mode-and-custom-chat-modes.md)
 1. **Step 3**: [Ground, clarify, and review the plan](workshop-step-3-prompt-files.md)
 1. **Step 4**: [Implement and test the MCP server](workshop-step-4-build-your-application.md)
