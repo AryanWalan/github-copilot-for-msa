@@ -1,6 +1,6 @@
 # Developer Workbench workshop
 
-This repository is a workshop in which students use a GitHub Copilot coding agent to create an application from an absent target directory. The starter intentionally contains no Developer Workbench source code or project scaffold.
+This repository is a workshop in which students use a GitHub Copilot coding agent to create the Developer Workbench application during the lab.
 
 ## Workshop rules
 

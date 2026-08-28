@@ -17,8 +17,6 @@ jobs:
         working-directory: apps/workshop-site
     steps:
       - uses: actions/checkout@v5
-      - name: Confirm the starter solution is absent
-        run: test ! -e ../../samples/developer-workbench-mcp
       - uses: actions/setup-node@v5
         with:
           node-version: 22

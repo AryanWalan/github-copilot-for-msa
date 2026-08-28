@@ -1,10 +1,8 @@
 # MCP Server Creation and Recovery
 
-## The target project does not exist
+## Project creation did not complete
 
-Before Step 4, this is expected. The starter repository deliberately contains no Developer Workbench project or source code.
-
-If the project is still absent after the Step 4 creation run:
+The workshop asks Copilot to create the Developer Workbench project during Step 4. If creation does not complete:
 
 1. Confirm that the Step 3 plan was reviewed and approved.
 2. Return to Step 4 in the same Copilot conversation.

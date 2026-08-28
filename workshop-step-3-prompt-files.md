@@ -6,7 +6,27 @@ Replace the incomplete request with authoritative context, explicit boundaries, 
 
 ## Grounding sources
 
-Use the workshop contract and trusted workspace MCP servers deliberately:
+MCP servers give Copilot access to focused capabilities through a standard protocol. In this module, Microsoft Learn provides authoritative Microsoft product guidance, while Context7 provides current package and SDK documentation. Grounding Copilot with the right source reduces invented APIs and unsupported recommendations.
+
+Add and approve these grounding MCP servers before asking Copilot to read the specification or make a plan. Configure both clients so you can use the same workflow in VS Code Insiders and Copilot CLI.
+
+### VS Code Insiders
+
+- [ ] Open the workspace MCP configuration from the Command Palette or open [.vscode/mcp.json](.vscode/mcp.json).
+- [ ] Add a server named `microsoft.docs.mcp` with the URL `https://learn.microsoft.com/api/mcp`.
+- [ ] Add a server named `context7` with the URL `https://mcp.context7.com/mcp`.
+- [ ] Save the file, approve both servers when prompted, and confirm they appear in the Chat tools list.
+
+### Copilot CLI
+
+- [ ] Start `copilot` from the repository root and enter `/mcp` to manage MCP servers, or open [.github/mcp.json](.github/mcp.json).
+- [ ] Add a server named `microsoft.docs.mcp` with the URL `https://learn.microsoft.com/api/mcp`.
+- [ ] Add a server named `context7` with the URL `https://mcp.context7.com/mcp`.
+- [ ] Approve both servers when prompted and confirm they are available with `/mcp` or `/env`.
+
+The clients intentionally use different configuration schemas: VS Code stores servers under `servers`, while Copilot CLI stores them under `mcpServers`. Copilot CLI also provides GitHub MCP as a built-in server, so it doesn't need a GitHub entry in the project file.
+
+Use the workshop contract and the configured workspace MCP servers deliberately:
 
 - **Developer Workbench specification:** the required outcome and acceptance boundaries in [spec/spec-developer-workbench-mcp.md](spec/spec-developer-workbench-mcp.md).
 - **Microsoft Learn MCP:** authoritative Microsoft product documentation.

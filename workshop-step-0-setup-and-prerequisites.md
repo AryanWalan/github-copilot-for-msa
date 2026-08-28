@@ -43,23 +43,11 @@ node --version
 ## 4. Clone the workshop repository
 
 - [ ] Clone this repository and open its root folder.
-- [ ] Confirm that `samples/developer-workbench-mcp` does not exist. This is intentional: you use your GitHub Copilot coding agent to create the complete project during the workshop.
+
 
 Don't open the detailed Developer Workbench specification yet. Step 2 first shows what Copilot assumes when it receives only an incomplete request. Step 3 then introduces the specification and grounding sources.
 
-## 5. Trust and inspect the grounding servers
-
-- [ ] Open the repository as a trusted workspace.
-- [ ] Review [.vscode/mcp.json](.vscode/mcp.json), which configures grounding servers for VS Code.
-- [ ] Review [.github/mcp.json](.github/mcp.json), which configures Microsoft Learn and Context7 for Copilot CLI.
-- [ ] Approve only the servers you understand.
-- [ ] Confirm that Microsoft Learn and Context7 tools are available.
-
-The files use different JSON schemas because each client has its own configuration format. Copilot CLI also includes GitHub MCP automatically, so its project file doesn't repeat that server.
-
-The local Developer Workbench server is deliberately not configured yet. In Step 4, your Copilot agent creates and validates the server. You then configure it for both clients and verify it in your primary client.
-
-## 6. Understand the workshop customizations
+## 5. Understand the workshop customizations
 
 The repository provides reusable Skills in `.github/skills` and the `learning-curator` custom agent in `.github/agents`. Both clients discover these repository customizations automatically. You don't use the curator until after you create and configure its required local MCP tools in Step 4.
 
@@ -72,8 +60,7 @@ The repository provides reusable Skills in `.github/skills` and the `learning-cu
 - [ ] I installed and signed in to VS Code Insiders and Copilot CLI.
 - [ ] I chose one primary client for the hands-on exercises.
 - [ ] Git and Node.js 22 or later are installed.
-- [ ] I understand that the Developer Workbench source is not included in the starter repository.
-- [ ] The workspace is trusted and I can see the Microsoft Learn and Context7 tools.
+- [ ] I understand that the Developer Workbench is created during the workshop.
 - [ ] Optional: I installed GitHub Copilot App for self-directed exploration after the core lab.
 
 ## Recovery

@@ -4,7 +4,7 @@ Use these checkpoints to resume the lab without skipping the engineering loop.
 
 ## Checkpoint 1: Context and plan
 
-The target project is absent. You have given Copilot the incomplete creation request without repository context or tool use, identified its assumptions, used authoritative sources, answered clarification questions, challenged an assumption, and reviewed a plan. Don't approve creation until the plan names files and validation commands.
+You have given Copilot the incomplete creation request without repository context or tool use, identified its assumptions, used authoritative sources, answered clarification questions, challenged an assumption, and reviewed a plan. Don't approve creation until the plan names files and validation commands.
 
 ## Checkpoint 2: Copilot creation
 

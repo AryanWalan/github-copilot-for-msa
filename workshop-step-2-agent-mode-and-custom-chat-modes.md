@@ -12,7 +12,6 @@ Identify the technical, security, and product decisions Copilot invents when the
 
 - [ ] Open this repository in your primary client.
 - [ ] Confirm the workspace is trusted.
-- [ ] Confirm that `samples/developer-workbench-mcp` does not exist. No solution source is included in this workshop.
 - [ ] Prepare a read-only conversation for this exercise:
   - **VS Code Insiders:** open a new agent session in the Chat view or Agents window. Don't approve any tool use.
   - **Copilot CLI:** run `copilot` from the repository root, confirm folder trust, and press <kbd>Shift</kbd>+<kbd>Tab</kbd> until Plan mode is active.

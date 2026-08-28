@@ -2,7 +2,7 @@
 
 **Time:** 5 minutes
 
-You used a GitHub Copilot coding agent to create an application from an absent target directory, not to modify a supplied solution. You completed a small but complete agentic-development loop: establish context, clarify requirements, challenge an assumption, plan, create, validate, approve a tool action, and review the result.
+You used a GitHub Copilot coding agent to create an application during the lab, not to modify a supplied solution. You completed a small but complete agentic-development loop: establish context, clarify requirements, challenge an assumption, plan, create, validate, approve a tool action, and review the result.
 
 ## Carry the loop into your work
 
