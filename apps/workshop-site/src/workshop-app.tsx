@@ -102,7 +102,6 @@ export function App() {
       </aside>
       <section className="lesson" aria-live="polite">
         <div className="lesson-meta"><span>STEP {module.number}</span><span>{module.duration}</span></div>
-        <div className="track-detail">{track === 'vscode' ? 'Primary client: VS Code Insiders agent session.' : 'Primary client: interactive Copilot CLI session.'}</div>
         <div className="lesson-track-controls">
           <div className="track-detail">{track === 'vscode' ? 'Primary client: VS Code Insiders agent session.' : 'Primary client: interactive Copilot CLI session.'}</div>
           <button className={showComparison ? 'compare-button selected' : 'compare-button'} onClick={() => setShowComparison((current) => !current)} aria-pressed={showComparison}>
