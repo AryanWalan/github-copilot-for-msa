@@ -1,23 +1,23 @@
 # Workshop Step 0: Setup and Prerequisites
 
-Complete this step before the facilitator-led session and before starting the hands-on lab. The workshop uses a local TypeScript MCP server, so each student needs a working GitHub Copilot account, one supported client track, and a validated local environment.
+Complete this step before the facilitator-led session and before starting the hands-on lab. The workshop uses a local TypeScript MCP server, so each student needs a working GitHub Copilot account, both supported client applications, and a validated local environment.
 
 ## 1. Activate GitHub Copilot
 
 - [ ] Create or sign in to a [GitHub account](https://github.com/).
-- [ ] Choose one supported plan:
-   - [ ] **Copilot Student:** apply and activate before the workshop. Student verification and Copilot activation are separate and may take several days.
+- [ ] Make sure you have one of these supported GitHub Copilot plans:
+   - [ ] [**Copilot Student**](https://github.com/education/students): apply and activate before the workshop. Student verification and Copilot activation are separate and may take several days.
    - [ ] **Copilot Pro, Pro+, or Max:** fully supported.
    - [ ] **Copilot Free:** supported for the core workflow. Use the fallback prompts when interactive Skill invocation is unavailable. Do not rely on a published numeric AI-credit allowance.
    - [ ] **Copilot Business or Enterprise:** supported only when your organization enables both MCP and Copilot CLI.
-- [ ] Confirm that GitHub Copilot is active in your chosen client.
+- [ ] Confirm that GitHub Copilot is active in both clients.
 
-## 2. Choose a guided client track
+## 2. Install the guided client software
 
-The workshop has two fully documented tracks. Choose one for the session:
+The workshop has two fully documented client tracks. Install and sign in to both before the session. You can choose either client during the hands-on exercises.
 
 - [ ] **VS Code Insiders:** download [VS Code Insiders](https://code.visualstudio.com/insiders/), sign in with GitHub, and confirm Copilot Chat is available.
-- [ ] **Copilot CLI:** install [Copilot CLI](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli), sign in to GitHub, and confirm that `copilot --version` succeeds. For npm installation, use Node.js 22 or later:
+- [ ] **Copilot CLI:** install [Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli), sign in to GitHub, and confirm that `copilot --version` succeeds. For npm installation, use Node.js 22 or later:
 
 ```text
 npm install -g @github/copilot
@@ -64,7 +64,7 @@ The bookmark tool writes only the local HTML export. It never edits a Chrome or 
 ## Setup checkpoint
 
 - [ ] My GitHub Copilot plan is active and appropriate for the workshop.
-- [ ] I selected VS Code Insiders or Copilot CLI as my guided track.
+- [ ] I installed and signed in to VS Code Insiders and Copilot CLI.
 - [ ] Git and Node.js 22 or later are installed.
 - [ ] The MCP project installs and passes tests, typecheck, and lint.
 - [ ] The workspace is trusted and I can see the required MCP tools.
