@@ -21,10 +21,10 @@ Don't copy a completed implementation from another branch or repository. Recover
 ## The created server is not visible
 
 1. Confirm Step 4 is complete and all validation commands pass.
-2. Verify that Copilot added `developer-workbench` using the created project's actual start command in the assigned primary client:
+2. Verify that Copilot added `developer-workbench` using the created project's actual start command in your selected primary client:
    - VS Code Insiders reads `.vscode/mcp.json`.
    - Copilot CLI reads `.github/mcp.json` and doesn't read `.vscode/mcp.json`.
-3. Confirm the workspace is trusted and restart or reload the local MCP server in the primary client.
+3. Confirm the workspace is trusted. In VS Code Insiders, press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, run **Developer: Reload Window**, then reopen the Chat tools list. In Copilot CLI, exit the session, run `copilot` again from the repository root, then enter `/mcp show`.
 4. Inspect server diagnostics. Stdio protocol messages belong on stdout; diagnostics belong on stderr.
 
 ## A remote source is unavailable

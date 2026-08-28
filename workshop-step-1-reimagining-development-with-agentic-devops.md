@@ -25,6 +25,20 @@ Built-in commands such as `/rubber-duck`, `/review`, and `/security-review` prov
 
 With Copilot, you will create a local TypeScript MCP server that manages categorized developer-learning links and exports a browser-importable bookmark HTML file. It never modifies a browser profile.
 
-- [ ] Identify one decision you will personally keep: context, tool approval, plan acceptance, or validation evidence.
+- [ ] **Choose a decision you will keep**
 
-Next: [see what an incomplete request causes](workshop-step-2-agent-mode-and-custom-chat-modes.md).
+## Choose a decision you will keep
+
+Choose one decision type that you, rather than Copilot, will own during the remaining steps:
+
+1. Choose **context** to decide which files, specifications, and documentation Copilot may use.
+2. Choose **tool approval** to decide which proposed reads, commands, and writes Copilot may perform.
+3. Choose **plan acceptance** to decide whether its proposed files, boundaries, and checks are sufficient before implementation.
+4. Choose **validation evidence** to decide whether the actual command output proves the change works.
+5. Record your choice in a note or keep it visible beside this workshop. In later steps, identify one moment where you made that decision.
+
+**Success signal:** You can state the decision type you chose and identify the next step where you will exercise it.
+
+---
+
+**Next:** [Step 2: Give Copilot an incomplete request](workshop-step-2-agent-mode-and-custom-chat-modes.md)

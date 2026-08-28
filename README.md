@@ -4,58 +4,52 @@ This Microsoft Student Accelerator workshop teaches a disciplined agentic-develo
 
 **context -> clarify -> challenge assumptions -> plan -> create -> review -> validate**
 
-Students use a GitHub Copilot coding agent to create a local TypeScript MCP server that collects approved developer-learning links from Microsoft Learn and Context7 into a browser-importable HTML bookmark file.
+You use a GitHub Copilot coding agent to create a local TypeScript MCP server that collects approved developer-learning links from Microsoft Learn and Context7 into a browser-importable HTML bookmark file.
 
 The starter repository deliberately contains no Developer Workbench source code, tests, package files, or local server registration. The workshop introduces the target specification after students first inspect Copilot's assumptions. Creating the application is the lab, not a prerequisite.
 
-## Core tracks
+## Choose your primary client
 
-The facilitator assigns each in-person cohort one primary client track. Students install both clients before the workshop, create the server once, and can compare the other track later.
+Install both clients, then choose one as your primary client for this workshop. Create the server only once in that client. You can use the other client later to compare its workflow without rebuilding the project.
 
-- **VS Code Insiders:** use an agent session in the Chat view or Agents window and workspace MCP configuration.
-- **Copilot CLI:** run an interactive `copilot` session from the repository root and use its project MCP configuration.
+- **VS Code Insiders:** choose this track to work in an IDE, use Copilot Chat, and manage workspace MCP configuration.
+- **Copilot CLI:** choose this track to work from a terminal and manage project MCP configuration.
 
-The concepts and application are shared. The workshop site provides client-specific commands where they differ.
-
-Students without day-of Copilot access pair with an enabled student so they can still make context, approval, and review decisions.
+The concepts and application are shared. Each workshop step clearly labels the instructions that differ between the two clients.
 
 ## Optional exploration
 
-Students who are already confident with VS Code Insiders and Copilot CLI are encouraged to install GitHub Copilot App and try the completed lab independently. The workshop does not provide Copilot App setup or usage instructions. The optional bookmark viewer remains separate from the core lab.
+Learners who are already confident with VS Code Insiders and Copilot CLI can install GitHub Copilot App and try the completed lab independently. The workshop does not provide Copilot App setup or usage instructions. The optional bookmark viewer remains separate from the core lab.
 
 ## Prerequisites
 
-Complete these before the timed session:
+Complete the detailed [setup and prerequisites](workshop-step-0-setup-and-prerequisites.md) before beginning the workshop:
 
 - GitHub account and an active Copilot plan.
 - [VS Code Insiders](https://code.visualstudio.com/insiders/) and [Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli).
 - [Git](https://git-scm.com/) and Node.js 22 or later.
-- A personal fork or local clone of this repository.
+- A personal fork or local clone of this repository, opened as a trusted workspace.
 - A trusted workspace with MCP server approval available.
 
 For npm-based Copilot CLI installation, use `npm install -g @github/copilot` with Node.js 22 or later.
 
-## What students create
+## What you create
 
-During the workshop, your Copilot coding agent creates `samples/developer-workbench-mcp` from nothing. The intentionally incomplete exercise in Step 2 comes first. Step 3 then reveals the detailed product specification and safety boundaries, so don't inspect the specification before completing Step 2.
+During the workshop, your Copilot coding agent creates `samples/developer-workbench-mcp` from nothing. The intentionally incomplete exercise in Step 2 comes first. Step 3 then reveals the detailed product specification and safety boundaries, so do not inspect the specification before completing Step 2.
 
 ## Workshop journey
 
 1. Complete [setup and prerequisites](workshop-step-0-setup-and-prerequisites.md).
-2. Reimagine development as an agentic engineering loop.
-3. Give Copilot an intentionally incomplete creation request without allowing it to inspect the repository or edit files.
-4. Ground the Copilot agent with the specification, Microsoft Learn, and Context7.
+2. [Reimagine development as an agentic engineering loop](workshop-step-1-reimagining-development-with-agentic-devops.md).
+3. [Give Copilot an intentionally incomplete creation request](workshop-step-2-agent-mode-and-custom-chat-modes.md) without allowing repository inspection or edits.
+4. [Ground the agent with the specification, Microsoft Learn, and Context7](workshop-step-3-prompt-files.md).
 5. Ask clarifying questions, challenge an assumption, and review the creation plan.
-6. Give the Copilot agent the approved plan and ask it to create and test the complete MCP server.
-7. Inspect real validation output and use the same agent to repair focused failures.
-8. Approve proposed links, generate the HTML export, review the created code, and import the export manually through Chrome or Edge.
-
-## Workshop timing
-
-The facilitated core is 60 minutes, excluding setup: 5 minutes for the mental model, 7 minutes for the incomplete request, 15 minutes for grounding and planning, 22 minutes for incremental creation, 8 minutes for reusable customization and reviews, and 3 minutes for recap.
+6. [Create and test the complete MCP server](workshop-step-4-build-your-application.md) from the approved plan.
+7. [Package validation behavior, curate links, and review the code](workshop-step-5-realworld-scenarios.md).
+8. [Carry the loop into your next project](workshop-step-6-next-steps.md).
 
 ## MCP configuration
 
-The starter leaves documentation MCP configuration empty. In Step 3, students add Microsoft Learn and Context7 at workspace scope in VS Code Insiders or repository scope in Copilot CLI. After validation, they configure the local Developer Workbench only for their primary client. Every shell command and file write requires explicit student approval.
+The starter leaves documentation MCP configuration empty. In Step 3, you add Microsoft Learn and Context7 at workspace scope in VS Code Insiders or repository scope in Copilot CLI. After validation, configure the local Developer Workbench only for your primary client. Every shell command and file write requires your explicit approval.
 
 The detailed product and security boundaries are deliberately introduced in Step 3 rather than disclosed here.

@@ -25,4 +25,12 @@ Instructions constrain matching work. A custom agent defines a role and tool bou
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [VS Code Copilot customization](https://code.visualstudio.com/docs/copilot/customization/overview)
 
-Keep the project and extend it after the session: add a link-quality policy, strengthen the curator's selection criteria, or create another Skill for a repeated workflow in one of your own repositories.
+- [ ] **Continue the practice**
+
+## Continue the practice
+
+1. Keep the project as evidence of the decisions, plan, approval, and validation steps you completed.
+2. Add a link-quality policy, strengthen the curator's selection criteria, or create another Skill for a repeated workflow in one of your own repositories.
+3. Start future agent-assisted work by providing the contract, requesting clarification, approving a plan, and inspecting real validation evidence.
+
+**Workshop complete.**

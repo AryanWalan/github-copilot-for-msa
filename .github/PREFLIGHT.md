@@ -1,12 +1,13 @@
 # Workshop Preflight
 
-Complete this before the facilitated session:
+Complete this before starting the workshop:
 
-- [ ] Every student has a laptop with Git and Node.js 22 or later.
-- [ ] Every student can sign in to VS Code Insiders and Copilot CLI with GitHub Copilot access.
-- [ ] Every student has a personal fork or local clone and trusts the workspace.
-- [ ] The facilitator has assigned the cohort's primary client track and arranged pairing for access failures.
-- [ ] The facilitator has verified that Microsoft Learn and Context7 are reachable; students add them themselves in Module 03.
-- [ ] The facilitator has checked the 60-minute schedule and recovery links.
+- [ ] I have a laptop with Git and Node.js 22 or later, and `git --version` and `node --version` report versions.
+- [ ] I can sign in to VS Code Insiders and GitHub Copilot CLI with GitHub Copilot access.
+- [ ] I have a personal fork or local clone of the workshop repository and have trusted the workspace.
+- [ ] I selected one primary client: VS Code Insiders or Copilot CLI. I will create the project only in that client.
+- [ ] I can open the Chat view in VS Code Insiders and start a `copilot` session from the repository root.
+- [ ] I understand that Microsoft Learn and Context7 are added in Step 3, after the intentionally incomplete Step 2 exercise.
+- [ ] I reviewed the recovery links in the relevant workshop steps.
 
-No target project, curator agent, or validation Skill is supplied. Students create those artifacts during the workshop.
+No target project, curator agent, or validation Skill is supplied. You create those artifacts during the workshop.
