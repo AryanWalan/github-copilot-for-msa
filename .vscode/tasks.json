@@ -1,0 +1,94 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Workshop Site: Dev Server",
+      "type": "npm",
+      "script": "dev",
+      "path": "apps/workshop-site",
+      "isBackground": true,
+      "problemMatcher": [
+        "$vite"
+      ],
+      "presentation": {
+        "group": "workshop-site",
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Workshop Site: Lint",
+      "type": "npm",
+      "script": "lint",
+      "path": "apps/workshop-site",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ],
+      "presentation": {
+        "group": "workshop-site",
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Workshop Site: Typecheck",
+      "type": "npm",
+      "script": "typecheck",
+      "path": "apps/workshop-site",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "presentation": {
+        "group": "workshop-site",
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Workshop Site: Build",
+      "type": "npm",
+      "script": "build",
+      "path": "apps/workshop-site",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "presentation": {
+        "group": "workshop-site",
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Workshop Site: Verify",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Workshop Site: Lint",
+        "Workshop Site: Typecheck",
+        "Workshop Site: Build"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Impeccable: Detect App",
+      "type": "shell",
+      "command": "npx --yes impeccable detect apps/",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "group": "impeccable",
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Impeccable: Initialize Context",
+      "type": "shell",
+      "command": "node .github/skills/impeccable/scripts/context.mjs",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "group": "impeccable",
+        "reveal": "always"
+      }
+    }
+  ]
+}
