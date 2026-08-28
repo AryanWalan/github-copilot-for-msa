@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight, ExternalLink, Github, MonitorCog, Terminal }
 import { useEffect, useState, type ComponentProps, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { getTaskCount, workshopModules } from './workshop-content';
+import { getTaskCount, resolveImageAsset, workshopModules } from './workshop-content';
 
 type Track = 'vscode' | 'cli';
 type ListItemProps = ComponentProps<'li'> & { node?: { position?: { start?: { line?: number } }; properties?: { className?: string[] } } };
@@ -58,6 +58,8 @@ export function App() {
     return <a href={href} target={href?.startsWith('http') ? '_blank' : undefined} rel={href?.startsWith('http') ? 'noreferrer' : undefined} {...props}>{children}</a>;
   };
 
+  const renderImage = ({ src, alt, ...props }: ComponentProps<'img'>): ReactNode => <img src={resolveImageAsset(src)} alt={alt ?? ''} {...props} />;
+
   return <main className="shell">
     <header className="topbar">
       <button className="brand" onClick={() => changeModule(0)}><span className="eyebrow">MICROSOFT STUDENT ACCELERATOR</span><span>Agentic Development Workshop</span></button>
@@ -75,7 +77,7 @@ export function App() {
       <section className="lesson" aria-live="polite">
         <div className="lesson-meta"><span>STEP {module.number}</span><span>{module.duration}</span></div>
         <div className="track-detail">{track === 'vscode' ? 'Guided track: VS Code Insiders with a trusted workspace and Copilot Chat.' : 'Guided track: Copilot CLI from the local repository.'}</div>
-        <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ li: renderListItem, a: renderLink }}>{module.content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ li: renderListItem, a: renderLink, img: renderImage }}>{module.content}</ReactMarkdown>
         <div className="lesson-footer"><span>{getTaskCount(module.content)} tasks in this module</span><div><button className="nav-button" disabled={currentIndex === 0} onClick={() => changeModule(currentIndex - 1)} aria-label="Previous step" title="Previous step"><ChevronLeft size={19} /></button><button className="nav-button" disabled={currentIndex === workshopModules.length - 1} onClick={() => changeModule(currentIndex + 1)} aria-label="Next step" title="Next step"><ChevronRight size={19} /></button></div></div>
       </section>
     </div>

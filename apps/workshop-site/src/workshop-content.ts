@@ -12,6 +12,12 @@ const rawModules = import.meta.glob<string>('../../../workshop-step-*.md', {
   query: '?raw'
 });
 
+const imageAssets = import.meta.glob<string>('../../../images/*', {
+  eager: true,
+  import: 'default',
+  query: '?url'
+});
+
 const moduleId = (path: string): string => path.match(/workshop-step-(\d+)-(.+)\.md$/)?.[2] ?? path;
 
 const number = (path: string): string => path.match(/workshop-step-(\d+)-/)?.[1].padStart(2, '0') ?? '00';
@@ -25,3 +31,10 @@ export const workshopModules: RawModule[] = Object.entries(rawModules)
   .sort((left, right) => left.number.localeCompare(right.number));
 
 export const getTaskCount = (content: string): number => (content.match(/^\s*[-*+] \[[ xX]\] /gm) ?? []).length;
+
+export const resolveImageAsset = (source: string | undefined): string | undefined => {
+  if (!source) return undefined;
+  const filename = source.split('/').pop();
+  const assetPath = Object.keys(imageAssets).find((path) => path.endsWith(`/${filename}`));
+  return assetPath ? imageAssets[assetPath] : source;
+};
