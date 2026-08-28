@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Nunito+Sans:wght@400;600;700;800&display=swap');
 
+.lesson-track-controls { align-items: center; display: flex; gap: 14px; justify-content: space-between; margin: 0 0 18px; }
+.compare-button { align-items: center; background: #fff; border: 1px solid #d0d7de; border-radius: 6px; color: #24292f; display: inline-flex; flex: 0 0 auto; font-size: 13px; font-weight: 700; gap: 7px; padding: 7px 10px; }
+.compare-button:hover, .compare-button.selected { background: #ddf4ff; border-color: #0969da; color: #0969da; }
+.comparison-note { background: #ddf4ff; border-left: 4px solid #0969da; font-size: 14px !important; margin: 0 0 20px; padding: 10px 13px; }
+
 :root { color: #24292f; background: #f6f8fa; font-family: 'Nunito Sans', sans-serif; font-synthesis: none; }
 * { box-sizing: border-box; }
+.lesson img { display: block; height: auto; max-width: 100%; }
 body { margin: 0; min-width: 320px; }
 button { font: inherit; cursor: pointer; }
 button:focus-visible, a:focus-visible { outline: 3px solid #0969da; outline-offset: 3px; }

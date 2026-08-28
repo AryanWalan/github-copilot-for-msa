@@ -1,106 +1,68 @@
-# Workshop Step 3: Ground, clarify, and review the plan
+# Workshop Step 3: Ground, clarify, and review a plan
 
 **Time:** 15 minutes
 
-Replace the incomplete request with authoritative context, explicit boundaries, clarifying questions, and a reviewable plan. Continue in the same conversation so you can compare Copilot's grounded response with its initial assumptions.
+Continue the read-only conversation from Step 2. Reveal the product contract, add current documentation sources, create a scoped instruction, resolve uncertainty, and approve a reviewable plan. Do not create the target project yet.
 
-## Grounding sources
+## Read the contract
 
-MCP servers give Copilot access to focused capabilities through a standard protocol. In this module, Microsoft Learn provides authoritative Microsoft product guidance, while Context7 provides current package and SDK documentation. Grounding Copilot with the right source reduces invented APIs and unsupported recommendations.
+The required behavior and security boundaries are in [spec/spec-developer-workbench-mcp.md](spec/spec-developer-workbench-mcp.md). Allow Copilot to read it. Microsoft Learn is authoritative for Microsoft product guidance. Context7 is useful for current package and SDK APIs; assess its suggestions against primary sources.
 
-Add and approve these grounding MCP servers before asking Copilot to read the specification or make a plan. Configure both clients so you can use the same workflow in VS Code Insiders and Copilot CLI.
+## Add grounding sources
 
 ### VS Code Insiders
 
-- [ ] Open the workspace MCP configuration from the Command Palette or open [.vscode/mcp.json](.vscode/mcp.json).
-- [ ] Add a server named `microsoft.docs.mcp` with the URL `https://learn.microsoft.com/api/mcp`.
-- [ ] Add a server named `context7` with the URL `https://mcp.context7.com/mcp`.
-- [ ] Save the file, approve both servers when prompted, and confirm they appear in the Chat tools list.
+1. Open the Command Palette and run `MCP: Add Server`.
+2. Choose **HTTP**, enter `https://learn.microsoft.com/api/mcp`, name it `microsoft.docs.mcp`, and choose **Workspace** scope.
+3. Repeat with `https://mcp.context7.com/mcp` named `context7`.
+4. Approve each server and confirm both appear in the Chat tools list.
 
 ### Copilot CLI
 
-- [ ] Start `copilot` from the repository root and enter `/mcp` to manage MCP servers, or open [.github/mcp.json](.github/mcp.json).
-- [ ] Add a server named `microsoft.docs.mcp` with the URL `https://learn.microsoft.com/api/mcp`.
-- [ ] Add a server named `context7` with the URL `https://mcp.context7.com/mcp`.
-- [ ] Approve both servers when prompted and confirm they are available with `/mcp` or `/env`.
+1. Open [.github/mcp.json](.github/mcp.json) and add `microsoft.docs.mcp` and `context7` under `mcpServers`, using type `http` and the URLs above.
+2. Restart the CLI session if prompted.
+3. Enter `/mcp show` and confirm both project servers appear.
 
-The clients intentionally use different configuration schemas: VS Code stores servers under `servers`, while Copilot CLI stores them under `mcpServers`. Copilot CLI also provides GitHub MCP as a built-in server, so it doesn't need a GitHub entry in the project file.
+## Create a scoped instruction
 
-Use the workshop contract and the configured workspace MCP servers deliberately:
+An instruction tells Copilot how to work with matching files. Ask it to create `.github/instructions/mcp-typescript.instructions.md` with an `applyTo` pattern for `samples/developer-workbench-mcp/**/*.ts`. Review and approve the write only when the rules require strict TypeScript, stdio diagnostics on stderr, fixed output boundaries, focused validation, and asking rather than inventing requirements.
 
-- **Developer Workbench specification:** the required outcome and acceptance boundaries in [spec/spec-developer-workbench-mcp.md](spec/spec-developer-workbench-mcp.md).
-- **Microsoft Learn MCP:** authoritative Microsoft product documentation.
-- **Context7:** current package and SDK API references. Verify recommendations against the primary source before saving a link.
+```text
+Read spec/spec-developer-workbench-mcp.md. Propose a concise path-specific instruction for TypeScript files under samples/developer-workbench-mcp. It must enforce strict TypeScript, MCP stdio discipline, the fixed bookmark-output boundary, focused validation, and asking about missing requirements. Do not write the instruction until I approve the proposed content.
+```
 
-The Developer Workbench MCP server isn't a grounding source yet because you haven't created it.
+After approval, ask Copilot to confirm that the new instruction applies to future project files.
 
-## Prepare your primary client
-
-- **VS Code Insiders:** continue in the agent session from Step 2. Allow read-only access to the specification and grounding tools, but don't approve edits or commands.
-- **Copilot CLI:** remain in Plan mode. Approve read-only access to the specification and grounding tools, but don't approve changes.
-
-## Ask for clarification and challenge an assumption
+## Clarify and challenge
 
 Paste this prompt:
 
 ```text
-I want you to create the application defined in
-spec/spec-developer-workbench-mcp.md. No source code or project scaffold exists yet.
-Use Microsoft Learn for Microsoft product guidance and Context7 for current
-package and SDK APIs.
+I want you to create the application defined in spec/spec-developer-workbench-mcp.md. Use Microsoft Learn for Microsoft product guidance and Context7 for current package and SDK APIs.
 
-Read the specification, then ask me five questions to make sure you understand the
-desired outcome and aren't making assumptions. After those questions, identify and
-challenge the central solution assumption in the specification. Don't create or
-edit files or run commands yet.
+Read the specification, then ask exactly five questions to make sure you understand the outcome and are not making assumptions. After I answer, ask one senior-engineer question that challenges a consequential solution assumption. Do not create or edit project files or run commands yet.
 ```
 
-Answer the questions and discuss the challenge before continuing. Confirm each required decision:
+Use these facilitator-approved answers when the questions cover them: generate a Netscape bookmark HTML file rather than changing a browser profile; keep the output path fixed; accept only bounded HTTPS links; escape user-controlled HTML; preserve categories and links while rejecting canonical URL duplicates; write atomically; and show proposed links before a write tool runs.
 
-- [ ] Confirm the output path is fixed; the tool never accepts a path from the caller.
-- [ ] Confirm links must use HTTPS and have bounded title, category, and description fields.
-- [ ] Confirm user-controlled values are HTML-escaped.
-- [ ] Confirm existing links and categories are preserved and canonical URLs are not duplicated.
-- [ ] Confirm updates are atomic so a failed write can't leave a partial or corrupt export.
-- [ ] Confirm the agent must show candidate links and obtain approval before using a write tool.
-
-## Request a plan
-
-Paste this follow-up:
+## Request and review the plan
 
 ```text
-Based on the specification and our agreed decisions, plan how you will create the
-complete Developer Workbench MCP project from nothing. Choose and justify the
-project structure and implementation approach. Include dependencies, MCP tool
-schemas, security boundaries, failure modes, focused tests, configuration for both
-supported clients, and exact validation commands. Don't create or edit files or
-run commands yet. Return a reviewable plan.
+Based on the specification and our agreed decisions, return a no-edit plan for the complete Developer Workbench MCP project. Include project files, dependencies, MCP tool schemas, security boundaries, failure modes, focused tests, selected-client configuration, and exact validation commands. Do not create or edit files or run commands.
 ```
 
-## Review the plan
-
-The `rubber-duck` Skill is a reusable, read-only review workflow supplied by the workshop. Invocation differs by client:
-
-Copilot Student and paid plans:
-
-- **VS Code Insiders:** enter `/rubber-duck` and provide the plan.
-- **Copilot CLI:** ask Copilot to use the repository's `rubber-duck` Skill to review the plan.
-
-Copilot Free fallback: if the Skill isn't available, invoke `/rubber-duck-fallback` where supported or paste the contents of [.github/prompts/rubber-duck-fallback.prompt.md](.github/prompts/rubber-duck-fallback.prompt.md) with the plan. The fallback applies the same review criteria without interactive Skill invocation.
-
-- [ ] Revise the plan to address valid findings.
-- [ ] Approve creation only when the plan names the files and validation commands.
+Run the built-in `/rubber-duck` command with the plan. Revise valid findings, then explicitly approve creation only when the plan names the files and validation commands.
 
 ## Checkpoint
 
-- [ ] I used grounding sources with distinct roles.
-- [ ] I received five clarification questions and one challenged assumption.
-- [ ] I compared the grounded decisions with Copilot's initial assumptions.
-- [ ] I reviewed a plan that includes security and test boundaries.
-- [ ] I have not approved creation until the plan is complete.
+- [ ] Microsoft Learn and Context7 are connected in my primary client.
+- [ ] I created and verified a scoped TypeScript instruction.
+- [ ] I recorded five answers and one challenged assumption.
+- [ ] I reviewed a plan with tests, security boundaries, and validation commands.
+- [ ] I have not approved target-project creation yet.
 
 ## Recovery
 
-If a remote MCP server is unavailable, state the source role and continue using the project instructions. Do not fabricate a citation. If a Skill is unavailable, use its matching fallback prompt.
+If a documentation server is unavailable, state its intended role and continue with the specification. Do not invent sources. If the session is lost, start a new Plan conversation, attach the specification, and paste the clarification answers and reviewed plan.
 
-Next: [use your Copilot agent to create the MCP server](workshop-step-4-build-your-application.md).
+Next: [create the MCP server incrementally](workshop-step-4-build-your-application.md).

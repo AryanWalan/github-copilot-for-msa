@@ -1,27 +1,22 @@
-# Workshop Step 6: Continue the practice
+# Workshop Step 6: Carry the loop forward
 
-**Time:** 5 minutes
+**Time:** 3 minutes
 
-You used a GitHub Copilot coding agent to create an application during the lab, not to modify a supplied solution. You completed a small but complete agentic-development loop: establish context, clarify requirements, challenge an assumption, plan, create, validate, approve a tool action, and review the result.
+You created an application rather than modifying a supplied answer. Your work is evidence of the full agentic-development loop:
 
-## Carry the loop into your work
+| Concept | Evidence you produced |
+| --- | --- |
+| Context | Product specification and documentation MCP sources |
+| Clarify and challenge | Five answers and one challenged assumption |
+| Plan | A reviewed, approved implementation plan |
+| Create and validate | A tested Developer Workbench MCP server |
+| Instructions | A path-specific TypeScript instruction |
+| Skills | `developer-workbench-validation` quality gate |
+| Custom agents | `learning-curator` with a bounded role and tools |
+| Approval | A reviewed bookmark write |
+| Parallel work | A synthesized read-only review report |
 
-Use this sequence for the next feature you build:
-
-- [ ] State the user outcome and constraints.
-- [ ] Ground the agent with the authoritative sources and repository files it needs.
-- [ ] Ask questions and invite one challenge to your assumptions.
-- [ ] Review a plan covering files, failure modes, security, tests, and validation.
-- [ ] Ask the agent to make a small change, run a focused check, and use its actual output for the next decision.
-- [ ] Use repository instructions, custom agents, Skills, and MCP tools as reusable context rather than one-off prompts.
-
-## Suggested extensions
-
-- [ ] Add a category or link-quality policy to the bookmark server and its tests.
-- [ ] Add a read-only report that identifies links by category before a curator proposes more.
-- [ ] Improve the `learning-curator` agent's selection criteria, while keeping its write-approval gate.
-- [ ] Create a new Skill for a repeated workflow in one of your own repositories.
-- [ ] Explore the completed lab in GitHub Copilot App independently once you are comfortable with VS Code Insiders and Copilot CLI. This workshop deliberately does not provide Copilot App instructions.
+Instructions constrain matching work. A custom agent defines a role and tool boundary. A Skill packages a repeated local process. Built-in `/rubber-duck`, `/review`, and `/security-review` are general workflows. Subagents or `/fleet` divide independent work.
 
 ## Continue learning
 
@@ -30,10 +25,4 @@ Use this sequence for the next feature you build:
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [VS Code Copilot customization](https://code.visualstudio.com/docs/copilot/customization/overview)
 
-## Final checkpoint
-
-- [ ] I can explain why the agent needed more than the initial request.
-- [ ] I can describe the MCP server's security and output boundaries.
-- [ ] I ran the project tests, typecheck, and lint rather than assuming success.
-- [ ] I know when to use instructions, a custom agent, a Skill, and MCP.
-- [ ] I know that GitHub Copilot App is optional, self-directed exploration after the two supported clients.
+Keep the project and extend it after the session: add a link-quality policy, strengthen the curator's selection criteria, or create another Skill for a repeated workflow in one of your own repositories.

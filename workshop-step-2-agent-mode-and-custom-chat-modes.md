@@ -1,55 +1,51 @@
-# Workshop Step 2: Give Copilot an incomplete creation request
+# Workshop Step 2: Give Copilot an incomplete request
 
-**Time:** 10 minutes
+**Time:** 7 minutes
 
-This step makes the cost of vague requirements visible. You ask Copilot what it would create based only on an incomplete request. Copilot must not inspect the repository, use tools, or edit files during this exercise.
+This exercise makes the cost of vague requirements visible. Ask Copilot what it would create based only on a short request. It must not inspect the repository, use tools, run commands, or edit files.
 
-## Goal
+## Prepare a read-only conversation
 
-Identify the technical, security, and product decisions Copilot invents when the request doesn't provide enough context.
+Follow only your facilitator-assigned track. Stay in this conversation through Step 3 so you can compare the agent's first assumptions with its grounded plan.
 
-## Before you begin
+### VS Code Insiders
 
-- [ ] Open this repository in your primary client.
-- [ ] Confirm the workspace is trusted.
-- [ ] Prepare a read-only conversation for this exercise:
-  - **VS Code Insiders:** open a new agent session in the Chat view or Agents window. Don't approve any tool use.
-  - **Copilot CLI:** run `copilot` from the repository root, confirm folder trust, and press <kbd>Shift</kbd>+<kbd>Tab</kbd> until Plan mode is active.
+1. Open Chat and start a new agent conversation.
+2. Select Plan if it is available. If it is not, continue with the prompt below and deny every proposed tool action.
+3. When Copilot requests a workspace read, command, or edit, select **Deny**.
 
-Plan mode signals that you want analysis and planning rather than implementation. The prompt and your approval choices still enforce the boundary: don't allow repository reads, commands, or edits in this exercise.
+### Copilot CLI
+
+1. Run `copilot` from the repository root.
+2. Press <kbd>Shift</kbd>+<kbd>Tab</kbd> until Plan mode is active.
+3. Deny any proposed file read, shell command, or write action.
 
 ## The weak request
 
-Paste this request without adding requirements that are not shown:
+Paste this request without adding requirements from later modules:
 
 ```text
 Based only on this request, explain how you would create an MCP server that saves
 categorized developer-learning links to a browser-importable bookmarks file.
 
 List the outcome, architecture, files, dependencies, security boundaries, and
-tests you are assuming. Don't read repository files, use tools, or make changes.
+tests you are assuming. Do not read repository files, use tools, run commands,
+or make changes.
 ```
 
-Do not approve edits yet. Read the response and record:
+Record what the agent invented:
 
-- [ ] Record the output location the agent assumed.
-- [ ] Record whether it proposed a live browser integration or an export file.
-- [ ] Record how it would prevent malicious or malformed links.
-- [ ] Record the files it planned to create and the tests it planned to run.
+- [ ] The assumed output location.
+- [ ] Whether it chose direct browser integration or an export file.
+- [ ] How it would handle malformed or malicious links.
+- [ ] The files, dependencies, and tests it assumed.
 
-## Expected result
+## Success signal
 
-A confident response can still be wrong or incomplete. That is the point: a Copilot coding agent can create an entire project, but it can't infer your security boundary, import format, source quality bar, or definition of done. Step 3 introduces the missing context before any source code is created.
-
-## Checkpoint
-
-- [ ] I entered the incomplete request without supplying hidden requirements.
-- [ ] I identified at least three assumptions Copilot made.
-- [ ] I can explain why a plausible answer isn't the same as an agreed solution.
-- [ ] Copilot didn't inspect files, use tools, or edit the repository.
+The response contains useful ideas but at least three unagreed assumptions. The conversation shows no approved tools, commands, repository reads, or file changes.
 
 ## Recovery
 
-If your primary client is unavailable, use the other installed client. Keep the exercise read-only and use the same prompt.
+If the primary client is unavailable, pair with an enabled student or use the other installed client with the same read-only prompt. Do not reveal the specification yet.
 
-Next: [ground the agent and remove assumptions](workshop-step-3-prompt-files.md).
+Next: [ground, clarify, and review a plan](workshop-step-3-prompt-files.md).

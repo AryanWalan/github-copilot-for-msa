@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, ExternalLink, Github, MonitorCog, Terminal } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink, GitCompareArrows, Github, MonitorCog, Terminal } from 'lucide-react';
 import { useEffect, useState, type ComponentProps, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -8,6 +8,27 @@ type Track = 'vscode' | 'cli';
 type ListItemProps = ComponentProps<'li'> & { node?: { position?: { start?: { line?: number } }; properties?: { className?: string[] } } };
 const repositoryUrl = 'https://github.com/PlagueHO/github-copilot-for-msa';
 
+const filterClientSections = (content: string, track: Track, showComparison: boolean): string => {
+  if (showComparison) return content;
+
+  const headingTracks: Record<string, Track> = {
+    '### VS Code Insiders': 'vscode',
+    '### Copilot CLI': 'cli'
+  };
+  let visible = true;
+
+  return content.split('\n').filter((line) => {
+    const headingTrack = headingTracks[line];
+    if (headingTrack) {
+      visible = headingTrack === track;
+      return visible;
+    }
+
+    if (/^#{1,3}\s/.test(line)) visible = true;
+    return visible;
+  }).join('\n');
+};
+
 const getInitialModule = (): number => {
   const id = new URLSearchParams(window.location.search).get('step');
   return Math.max(0, workshopModules.findIndex((module) => module.id === id));
@@ -16,8 +37,10 @@ const getInitialModule = (): number => {
 export function App() {
   const [currentIndex, setCurrentIndex] = useState(getInitialModule);
   const [track, setTrack] = useState<Track>(() => localStorage.getItem('workshop-track') === 'cli' ? 'cli' : 'vscode');
+  const [showComparison, setShowComparison] = useState(false);
   const [completeTasks, setCompleteTasks] = useState<Set<string>>(() => new Set(JSON.parse(localStorage.getItem('workshop-tasks') ?? '[]') as string[]));
   const module = workshopModules[currentIndex];
+  const moduleContent = filterClientSections(module.content, track, showComparison);
   const taskCount = workshopModules.reduce((total, item) => total + getTaskCount(item.content), 0);
 
   useEffect(() => {
@@ -80,7 +103,14 @@ export function App() {
       <section className="lesson" aria-live="polite">
         <div className="lesson-meta"><span>STEP {module.number}</span><span>{module.duration}</span></div>
         <div className="track-detail">{track === 'vscode' ? 'Primary client: VS Code Insiders agent session.' : 'Primary client: interactive Copilot CLI session.'}</div>
-        <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ li: renderListItem, a: renderLink, img: renderImage }}>{module.content}</ReactMarkdown>
+        <div className="lesson-track-controls">
+          <div className="track-detail">{track === 'vscode' ? 'Primary client: VS Code Insiders agent session.' : 'Primary client: interactive Copilot CLI session.'}</div>
+          <button className={showComparison ? 'compare-button selected' : 'compare-button'} onClick={() => setShowComparison((current) => !current)} aria-pressed={showComparison}>
+            <GitCompareArrows size={16} /> {showComparison ? 'Show primary track' : 'Compare tracks'}
+          </button>
+        </div>
+        {showComparison && <p className="comparison-note">Both client paths are shown. Your primary track remains {track === 'vscode' ? 'VS Code Insiders' : 'Copilot CLI'}.</p>}
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ li: renderListItem, a: renderLink, img: renderImage }}>{moduleContent}</ReactMarkdown>
         <div className="lesson-footer"><span>{getTaskCount(module.content)} tasks in this module</span><div><button className="nav-button" disabled={currentIndex === 0} onClick={() => changeModule(currentIndex - 1)} aria-label="Previous step" title="Previous step"><ChevronLeft size={19} /></button><button className="nav-button" disabled={currentIndex === workshopModules.length - 1} onClick={() => changeModule(currentIndex + 1)} aria-label="Next step" title="Next step"><ChevronRight size={19} /></button></div></div>
       </section>
     </div>

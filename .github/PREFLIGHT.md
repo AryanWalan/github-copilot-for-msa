@@ -1,13 +1,12 @@
 # Workshop Preflight
 
-Complete this before the session:
+Complete this before the facilitated session:
 
-- [ ] GitHub Copilot is active in VS Code Insiders and Copilot CLI.
-- [ ] Node.js is version 22 or later.
-- [ ] Git is installed and this repository is cloned locally.
-- [ ] Choose VS Code Insiders or Copilot CLI as your primary client for the hands-on exercises.
-- [ ] Trust the workspace. Add and approve the Microsoft Learn and Context7 MCP servers in Module 03.
+- [ ] Every student has a laptop with Git and Node.js 22 or later.
+- [ ] Every student can sign in to VS Code Insiders and Copilot CLI with GitHub Copilot access.
+- [ ] Every student has a personal fork or local clone and trusts the workspace.
+- [ ] The facilitator has assigned the cohort's primary client track and arranged pairing for access failures.
+- [ ] The facilitator has verified that Microsoft Learn and Context7 are reachable; students add them themselves in Module 03.
+- [ ] The facilitator has checked the 60-minute schedule and recovery links.
 
-GitHub Copilot App is optional self-directed exploration for students already comfortable with both supported clients. This workshop doesn't include Copilot App instructions.
-
-- [ ] Optional: Install GitHub Copilot App only if you are already confident with VS Code Insiders and Copilot CLI. Use it to explore the completed lab independently after the session.
+No target project, curator agent, or validation Skill is supplied. Students create those artifacts during the workshop.
