@@ -1,8 +1,8 @@
-# Workshop Step 6: Continue the Practice
+# Workshop Step 6: Continue the practice
 
 **Time:** 5 minutes
 
-You have completed a small but complete agentic-development loop: establish context, clarify requirements, challenge an assumption, plan, implement, validate, approve a tool action, and review the result.
+You used a GitHub Copilot coding agent to create an application from an absent target directory, not to modify a supplied solution. You completed a small but complete agentic-development loop: establish context, clarify requirements, challenge an assumption, plan, create, validate, approve a tool action, and review the result.
 
 ## Carry the loop into your work
 
@@ -12,7 +12,7 @@ Use this sequence for the next feature you build:
 - [ ] Ground the agent with the authoritative sources and repository files it needs.
 - [ ] Ask questions and invite one challenge to your assumptions.
 - [ ] Review a plan covering files, failure modes, security, tests, and validation.
-- [ ] Make a small change, run a focused check, and use its actual output for the next decision.
+- [ ] Ask the agent to make a small change, run a focused check, and use its actual output for the next decision.
 - [ ] Use repository instructions, custom agents, Skills, and MCP tools as reusable context rather than one-off prompts.
 
 ## Suggested extensions
@@ -36,4 +36,4 @@ Use this sequence for the next feature you build:
 - [ ] I can describe the MCP server's security and output boundaries.
 - [ ] I ran the project tests, typecheck, and lint rather than assuming success.
 - [ ] I know when to use instructions, a custom agent, a Skill, and MCP.
-- [ ] I know that GitHub Copilot App is optional, self-directed exploration after the two core tracks.
+- [ ] I know that GitHub Copilot App is optional, self-directed exploration after the two supported clients.

@@ -1,4 +1,6 @@
-# Workshop Step 1: Reimagining Development with Agentic DevOps (10 minutes) 🚀💡
+# Workshop Step 1: Reimagining development with Agentic DevOps
+
+**Time:** 15 minutes
 
 Welcome to the future of software development! This opening session sets the stage for your AI-powered development journey.
 
@@ -13,7 +15,7 @@ Welcome to the future of software development! This opening session sets the sta
 
 This step is primarily a **facilitator-led presentation** covering:
 
-### Part 1: GitHub Copilot Overview (15 minutes)
+### GitHub Copilot overview
 
 **Key topics covered in presentation:**
 
@@ -66,10 +68,9 @@ How can you be a better context engineer? AI is not magic – providing context 
 
 In the upcoming workshop steps, you'll experience this transformation firsthand:
 
-1. **Step 0**: [Setup and prerequisites](workshop-step-0-setup-and-prerequisites.md)
-1. **Step 2**: [Start with an incomplete request](workshop-step-2-agent-mode-and-custom-chat-modes.md)
+1. **Step 2**: [Give Copilot an incomplete creation request](workshop-step-2-agent-mode-and-custom-chat-modes.md)
 1. **Step 3**: [Ground, clarify, and review the plan](workshop-step-3-prompt-files.md)
-1. **Step 4**: [Implement and test the MCP server](workshop-step-4-build-your-application.md)
+1. **Step 4**: [Create the MCP server with Copilot](workshop-step-4-build-your-application.md)
 1. **Step 5**: [Curate links, approve writes, and review quality](workshop-step-5-realworld-scenarios.md)
 1. **Step 6**: [Continue the practice](workshop-step-6-next-steps.md)
 
@@ -84,4 +85,4 @@ As you move into the hands-on portions, consider:
 
 ---
 
-**Ready to dive in?** Start with [Workshop Step 2: Start with an incomplete request](workshop-step-2-agent-mode-and-custom-chat-modes.md).
+**Ready to begin?** Continue to [Workshop Step 2: Give Copilot an incomplete creation request](workshop-step-2-agent-mode-and-custom-chat-modes.md).

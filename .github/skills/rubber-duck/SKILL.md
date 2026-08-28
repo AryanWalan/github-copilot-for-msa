@@ -1,6 +1,6 @@
 ---
 name: rubber-duck
-description: "Use when: reviewing a proposed implementation plan for the developer-workbench MCP server before code edits. Challenge scope, assumptions, security boundaries, failure modes, tests, and validation."
+description: "Use when: reviewing a proposed creation plan for the developer-workbench MCP server before code edits. Challenge scope, assumptions, security boundaries, failure modes, tests, and validation."
 ---
 
 # Rubber-Duck Plan Review
@@ -13,4 +13,4 @@ Review the proposed plan without editing files or running write-capable tools.
 4. Identify missing failure cases and focused tests.
 5. Return findings first, ordered by severity, then a short list of required plan changes.
 
-Do not approve implementation until the plan names the files to change and the commands that will validate the result.
+Do not approve creation until the plan names the files to create or change and the commands that will validate the result.

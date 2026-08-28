@@ -1,12 +1,19 @@
-# Workshop Step 5: Curate Links, Approve Writes, and Review Quality
+# Workshop Step 5: Use and review the created server
 
 **Time:** 15 minutes
 
-Use the MCP server as a capability with clear approval boundaries. Then review the implementation as code you will maintain, not as a one-time generated artifact.
+Use the MCP server that Copilot created as a real capability with clear approval boundaries. Then review the result as code you would maintain, not as a one-time generated artifact.
 
 ## Curate before writing
 
-Select the `learning-curator` custom agent. Ask a narrow development question, for example:
+After the local server is running and its tools are visible, select the `learning-curator` custom agent:
+
+- **VS Code Insiders:** select `learning-curator` from the agent picker.
+- **Copilot CLI:** enter `/agent`, then select `learning-curator`.
+
+The workshop already provides this agent in `.github/agents`. You switch to it because its tools and instructions are intentionally limited to finding, inspecting, and proposing learning links. It doesn't create or repair application code.
+
+Paste:
 
 ```text
 Find up to three current learning links for building TypeScript MCP servers.
@@ -19,34 +26,48 @@ and show the proposed additions. Do not save anything until I explicitly approve
 - [ ] Approve the `add_learning_links` tool call only after confirming the result belongs in your bookmark collection.
 - [ ] Open `samples/developer-workbench-mcp/output/developer-learning-bookmarks.html` and import it manually through Chrome or Edge's bookmark manager.
 
-## Improve the implementation
+## Ask Copilot to verify the created application
 
-Ask Copilot to extend the first cut:
+Switch from the restricted curator to a general-purpose coding agent:
+
+- **VS Code Insiders:** open a new agent session in the Chat view or Agents window and select the built-in coding agent you used in Step 4.
+- **Copilot CLI:** enter `/agent`, then select the built-in agent you used in Step 4.
+
+The new session doesn't need the curator conversation. It reads the created project and specification directly. Paste:
 
 ```text
-Improve the MCP server without expanding its output boundary. Preserve existing
-categories and links, prevent canonical URL duplicates, write through a temporary
-file followed by rename, and add list_learning_links. Add focused tests for
-malformed URLs, escaping, duplicates, multiple categories, existing files, and
-failed writes. Run the test, typecheck, and lint commands and report actual output.
+Review the Developer Workbench MCP project you created against
+spec/spec-developer-workbench-mcp.md. Inspect the implementation and tests, then
+run npm test, npm run typecheck, and npm run lint from the project directory.
+
+Do not edit files yet. Report findings first, ordered by severity, and include any
+acceptance criterion that is missing or not adequately tested. Report the actual
+command output and distinguish implementation defects from test gaps.
 ```
 
 ## Perform a code-quality review
 
-Copilot Student and paid plans: invoke `/code-quality-review`.
+The `code-quality-review` Skill applies a reusable read-only review procedure. This separation prevents the reviewer from silently fixing the code it is assessing.
 
-Copilot Free fallback: invoke `/code-quality-review-fallback` or paste the contents of [.github/prompts/code-quality-review-fallback.prompt.md](.github/prompts/code-quality-review-fallback.prompt.md).
+Copilot Student and paid plans:
 
-- [ ] Address one valid finding.
-- [ ] Rerun the same focused validation commands.
+- **VS Code Insiders:** enter `/code-quality-review`.
+- **Copilot CLI:** ask Copilot to use the repository's `code-quality-review` Skill.
+
+Copilot Free fallback: if the Skill isn't available, invoke `/code-quality-review-fallback` where supported or paste the contents of [.github/prompts/code-quality-review-fallback.prompt.md](.github/prompts/code-quality-review-fallback.prompt.md). The fallback applies the same read-only review criteria.
+
+- [ ] Choose one valid finding from the reviews.
+- [ ] Return to a general-purpose coding agent and ask it to make the smallest focused repair and rerun the affected check.
+- [ ] Ask Copilot to rerun all three validation commands after the focused check passes, and inspect the actual output.
 
 ## Checkpoint
 
 - [ ] I reviewed sources and approved a bookmark write intentionally.
 - [ ] I imported the generated HTML manually instead of modifying a browser profile.
-- [ ] The server preserves data, rejects duplicates, and writes atomically.
+- [ ] I can explain why the write tool required an explicit approval boundary.
+- [ ] The server created by Copilot satisfies the specification, including data preservation, duplicate rejection, and atomic writes.
 - [ ] I performed a read-only code review and addressed a valid finding.
-- [ ] All focused validation commands pass.
+- [ ] I verified the final validation results from actual command output.
 
 ## Recovery
 

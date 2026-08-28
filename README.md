@@ -4,14 +4,16 @@ This Microsoft Student Accelerator workshop teaches a disciplined agentic-develo
 
 **context -> clarify -> challenge assumptions -> plan -> implement -> review -> validate**
 
-The shared application is a local TypeScript MCP server that collects approved developer-learning links from Microsoft Learn and Context7 into a browser-importable HTML bookmark file.
+Students use a GitHub Copilot coding agent to create a local TypeScript MCP server that collects approved developer-learning links from Microsoft Learn and Context7 into a browser-importable HTML bookmark file.
+
+The starter repository deliberately contains no Developer Workbench source code, tests, package files, or local server registration. The workshop introduces the target specification after students first inspect Copilot's assumptions. Creating the application is the lab, not a prerequisite.
 
 ## Core tracks
 
-The guided workshop supports both:
+Install both clients before the workshop, then choose one as your primary client for the hands-on exercises. You create the server once; you don't repeat the lab in both clients.
 
-- **VS Code Insiders** with Agent Mode and workspace MCP configuration.
-- **Copilot CLI** with the same repository, prompts, and local MCP server.
+- **VS Code Insiders:** use an agent session in the Chat view or Agents window and workspace MCP configuration.
+- **Copilot CLI:** run an interactive `copilot` session from the repository root and use its project MCP configuration.
 
 The concepts and application are shared. The workshop site provides client-specific commands where they differ.
 
@@ -26,50 +28,30 @@ Students who are already confident with VS Code Insiders and Copilot CLI are enc
 Complete these before the timed session:
 
 - GitHub account and an active Copilot plan.
-- [VS Code Insiders](https://code.visualstudio.com/insiders/) or [Copilot CLI](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli).
+- [VS Code Insiders](https://code.visualstudio.com/insiders/) and [Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli).
 - [Git](https://git-scm.com/) and Node.js 22 or later.
 - A local clone of this repository.
 - A trusted workspace with MCP server approval available.
 
 For npm-based Copilot CLI installation, use `npm install -g @github/copilot` with Node.js 22 or later.
 
-## Start the MCP project
+## What students create
 
-```text
-cd samples/developer-workbench-mcp
-npm ci
-npm test
-npm run typecheck
-npm run lint
-```
-
-The local server exposes:
-
-- `add_learning_links`: validates one to five HTTPS links and writes `output/developer-learning-bookmarks.html`.
-- `list_learning_links`: inspects the current collection before additions are proposed.
-
-The server never edits Chrome or Edge profiles, accepts arbitrary output paths, stores secrets, or writes diagnostics to MCP stdout.
+During the workshop, your Copilot coding agent creates `samples/developer-workbench-mcp` from nothing. The intentionally incomplete exercise in Step 2 comes first. Step 3 then reveals the detailed product specification and safety boundaries, so don't inspect the specification before completing Step 2.
 
 ## Workshop journey
 
 1. Complete [setup and prerequisites](workshop-step-0-setup-and-prerequisites.md).
 2. Reimagine development as an agentic engineering loop.
-3. Run the intentionally weak bookmark-MCP request.
-4. Ground the agent with Microsoft Learn and Context7.
-5. Ask clarifying questions, challenge an assumption, and review the implementation plan.
-6. Implement the MCP server and run focused tests.
-7. Add repository guidance, a constrained custom agent, and a code-quality review Skill.
-8. Approve proposed links, generate the HTML export, and import it manually through Chrome or Edge.
-
-The detailed workshop steps are being rebuilt around this sequence. The implementation source is in [samples/developer-workbench-mcp](samples/developer-workbench-mcp/).
+3. Give Copilot an intentionally incomplete creation request without allowing it to inspect the repository or edit files.
+4. Ground the Copilot agent with the specification, Microsoft Learn, and Context7.
+5. Ask clarifying questions, challenge an assumption, and review the creation plan.
+6. Give the Copilot agent the approved plan and ask it to create and test the complete MCP server.
+7. Inspect real validation output and use the same agent to repair focused failures.
+8. Approve proposed links, generate the HTML export, review the created code, and import the export manually through Chrome or Edge.
 
 ## MCP configuration
 
-The workspace configuration in [.vscode/mcp.json](.vscode/mcp.json) includes Microsoft Learn, Context7, the local bookmark server, and GitHub MCP. The core exercise should use only the servers needed for the current step and require approval before a write tool call.
+The starter configures Microsoft Learn and Context7 for both clients: [.vscode/mcp.json](.vscode/mcp.json) for VS Code and [.github/mcp.json](.github/mcp.json) for Copilot CLI. After the server passes validation, students configure the local Developer Workbench in both repository files and verify it in their primary client. Write tool calls always require explicit approval.
 
-## Design boundaries
-
-- The output is a Netscape-format HTML export, not a live browser integration.
-- Link metadata is validated and HTML-escaped.
-- Writes preserve existing links, prevent canonical URL duplicates, and use a temporary file followed by rename.
-- Azure deployment, databases, browser extensions, native messaging, OAuth, and cloud-hosted MCP are outside the core workshop.
+The detailed product and security boundaries are deliberately introduced in Step 3 rather than disclosed here.

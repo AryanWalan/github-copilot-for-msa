@@ -10,23 +10,6 @@ permissions:
   contents: read
 
 jobs:
-  mcp:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: samples/developer-workbench-mcp
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: samples/developer-workbench-mcp/package-lock.json
-      - run: npm ci
-      - run: npm test
-      - run: npm run typecheck
-      - run: npm run lint
-
   site:
     runs-on: ubuntu-latest
     defaults:
@@ -34,11 +17,16 @@ jobs:
         working-directory: apps/workshop-site
     steps:
       - uses: actions/checkout@v5
+      - name: Confirm the starter solution is absent
+        run: test ! -e ../../samples/developer-workbench-mcp
       - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: apps/workshop-site/package-lock.json
+      - name: Validate starter MCP configuration
+        run: |
+          node -e "const fs=require('fs'); const vscode=JSON.parse(fs.readFileSync('../../.vscode/mcp.json')); const cli=JSON.parse(fs.readFileSync('../../.github/mcp.json')); if(vscode.servers['developer-workbench'] || cli.mcpServers['developer-workbench']) process.exit(1)"
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint

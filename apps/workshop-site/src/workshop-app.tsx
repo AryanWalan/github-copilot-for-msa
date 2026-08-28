@@ -6,6 +6,7 @@ import { getTaskCount, resolveImageAsset, workshopModules } from './workshop-con
 
 type Track = 'vscode' | 'cli';
 type ListItemProps = ComponentProps<'li'> & { node?: { position?: { start?: { line?: number } }; properties?: { className?: string[] } } };
+const repositoryUrl = 'https://github.com/PlagueHO/github-copilot-for-msa';
 
 const getInitialModule = (): number => {
   const id = new URLSearchParams(window.location.search).get('step');
@@ -55,7 +56,9 @@ export function App() {
   const renderLink = ({ href, children, ...props }: ComponentProps<'a'>): ReactNode => {
     const target = workshopModules.findIndex((item) => href?.includes(`workshop-step-${Number(item.number)}-`));
     if (target >= 0) return <button className="document-link" onClick={() => changeModule(target)}>{children}</button>;
-    return <a href={href} target={href?.startsWith('http') ? '_blank' : undefined} rel={href?.startsWith('http') ? 'noreferrer' : undefined} {...props}>{children}</a>;
+    const destination = href && !href.startsWith('http') && !href.startsWith('#') ? `${repositoryUrl}/blob/main/${href.replace(/^\.\//, '')}` : href;
+    const external = destination?.startsWith('http');
+    return <a href={destination} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined} {...props}>{children}</a>;
   };
 
   const renderImage = ({ src, alt, ...props }: ComponentProps<'img'>): ReactNode => <img src={resolveImageAsset(src)} alt={alt ?? ''} {...props} />;
@@ -63,7 +66,7 @@ export function App() {
   return <main className="shell">
     <header className="topbar">
       <button className="brand" onClick={() => changeModule(0)}><span className="eyebrow">MICROSOFT STUDENT ACCELERATOR</span><span>Agentic Development Workshop</span></button>
-      <div className="track" aria-label="Guided client track">
+      <div className="track" aria-label="Primary workshop client">
         <button className={track === 'vscode' ? 'selected' : ''} onClick={() => setTrack('vscode')}><MonitorCog size={16} /> VS Code Insiders</button>
         <button className={track === 'cli' ? 'selected' : ''} onClick={() => setTrack('cli')}><Terminal size={16} /> Copilot CLI</button>
       </div>
@@ -72,11 +75,11 @@ export function App() {
       <aside className="rail" aria-label="Workshop modules">
         <div className="progress"><span>{completeTasks.size} / {taskCount}</span><progress value={completeTasks.size} max={taskCount} /></div>
         <nav>{workshopModules.map((item, index) => <button key={item.id} className={index === currentIndex ? 'active' : ''} onClick={() => changeModule(index)}><span>{item.number}</span>{item.title}</button>)}</nav>
-        <p className="app-note">Optional: students confident in both core tracks may independently try GitHub Copilot App. This workshop contains no App instructions.</p>
+        <p className="app-note">Install both clients, then use one primary client for the lab. GitHub Copilot App is optional self-directed exploration.</p>
       </aside>
       <section className="lesson" aria-live="polite">
         <div className="lesson-meta"><span>STEP {module.number}</span><span>{module.duration}</span></div>
-        <div className="track-detail">{track === 'vscode' ? 'Guided track: VS Code Insiders with a trusted workspace and Copilot Chat.' : 'Guided track: Copilot CLI from the local repository.'}</div>
+        <div className="track-detail">{track === 'vscode' ? 'Primary client: VS Code Insiders agent session.' : 'Primary client: interactive Copilot CLI session.'}</div>
         <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ li: renderListItem, a: renderLink, img: renderImage }}>{module.content}</ReactMarkdown>
         <div className="lesson-footer"><span>{getTaskCount(module.content)} tasks in this module</span><div><button className="nav-button" disabled={currentIndex === 0} onClick={() => changeModule(currentIndex - 1)} aria-label="Previous step" title="Previous step"><ChevronLeft size={19} /></button><button className="nav-button" disabled={currentIndex === workshopModules.length - 1} onClick={() => changeModule(currentIndex + 1)} aria-label="Next step" title="Next step"><ChevronRight size={19} /></button></div></div>
       </section>

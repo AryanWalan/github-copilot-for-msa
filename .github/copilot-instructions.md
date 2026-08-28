@@ -1,24 +1,19 @@
-# Developer Workbench MCP
+# Developer Workbench workshop
 
-This repository is a workshop for building a local TypeScript MCP server that collects approved developer-learning links into a browser-importable HTML file.
+This repository is a workshop in which students use a GitHub Copilot coding agent to create an application from an absent target directory. The starter intentionally contains no Developer Workbench source code or project scaffold.
 
-## Project rules
+## Workshop rules
 
-- Use Node.js 22 or later, strict TypeScript, Zod validation, and the official MCP TypeScript SDK.
-- Keep the MCP server deterministic, local, secret-free, and narrowly scoped.
-- Never write diagnostics or logs to stdout. Stdio stdout is reserved for MCP protocol messages; use stderr for diagnostics.
-- Accept only HTTPS URLs and reject malformed, oversized, or ambiguous input.
-- Always escape user-controlled values before writing HTML.
-- Write only to `samples/developer-workbench-mcp/output/developer-learning-bookmarks.html`; never accept an arbitrary output path.
-- Preserve existing categories and links, prevent canonical URL duplicates, and write through a temporary file followed by rename.
-- Never modify Chrome or Edge profiles, use browser automation, or store credentials.
+- Don't create the target project during setup, the facilitator presentation, or the incomplete-request exercise.
+- During the incomplete-request exercise, follow the student's read-only boundary and don't inspect repository files or use tools.
+- When the student approves creation in Step 4, treat `spec/spec-developer-workbench-mcp.md` and the reviewed plan as the target contract.
+- Ask rather than invent missing requirements.
+- Keep changes within the target project and the repository-level client configuration named in the approved plan.
+- Never modify browser profiles or add browser automation to the core lab.
 
 ## Workflow
 
-1. Ask clarifying questions before implementation when requirements are incomplete.
-2. Produce and review a plan covering schemas, security boundaries, failure modes, tests, and validation.
-3. Make the smallest focused change.
-4. Run `npm test`, `npm run typecheck`, and `npm run lint` from `samples/developer-workbench-mcp`.
-5. Report actual command output; do not claim validation that was not run.
-
-The generated HTML is an export artifact for manual import into Chrome or Edge. It is not a live browser integration.
+1. Preserve the sequence from incomplete request to grounding, clarification, assumption challenge, reviewed plan, creation, review, and validation.
+2. Don't edit files until the student explicitly approves the creation step.
+3. During creation, work incrementally and run the cheapest focused check after the first substantive change.
+4. Report actual command output and don't claim validation that wasn't run.
