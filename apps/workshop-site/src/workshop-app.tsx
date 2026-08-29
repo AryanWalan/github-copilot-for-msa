@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight, ExternalLink, GitCompareArrows, Github, MonitorCog, Terminal } from 'lucide-react';
 import { useEffect, useState, type ComponentProps, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import { getTaskCount, resolveImageAsset, workshopModules } from './workshop-content';
 
@@ -117,7 +118,7 @@ export function App() {
           </button>
         </div>
         {showComparison && <p className="comparison-note">Both client paths are shown. Your primary track remains {track === 'vscode' ? 'VS Code Insiders' : 'Copilot CLI'}.</p>}
-        <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ li: renderListItem, a: renderLink, img: renderImage }}>{moduleContent}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={{ li: renderListItem, a: renderLink, img: renderImage }}>{moduleContent}</ReactMarkdown>
         <div className="lesson-footer"><span>{getTaskCount(module.content)} tasks in this module</span><div><button className="nav-button" disabled={currentIndex === 0} onClick={() => changeModule(currentIndex - 1)} aria-label="Previous step" title="Previous step"><ChevronLeft size={19} /></button><button className="nav-button" disabled={currentIndex === workshopModules.length - 1} onClick={() => changeModule(currentIndex + 1)} aria-label="Next step" title="Next step"><ChevronRight size={19} /></button></div></div>
       </section>
     </div>
