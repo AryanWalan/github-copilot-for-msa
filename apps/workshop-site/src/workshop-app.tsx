@@ -29,6 +29,11 @@ const filterClientSections = (content: string, track: Track, showComparison: boo
   }).join('\n');
 };
 
+const prepareLessonContent = (content: string): string => content
+  .replace(/^#\s+Workshop Step \d+:\s+/m, '# ')
+  .replace(/^(#{2,6})\s+\d+\.\s+/gm, '$1 ')
+  .replace(/^(\s*[-*+] \[[ xX]\] \*\*)\d+\.\s+/gm, '$1');
+
 const getInitialModule = (): number => {
   const id = new URLSearchParams(window.location.search).get('step');
   return Math.max(0, workshopModules.findIndex((module) => module.id === id));
@@ -40,7 +45,7 @@ export function App() {
   const [showComparison, setShowComparison] = useState(false);
   const [completeTasks, setCompleteTasks] = useState<Set<string>>(() => new Set(JSON.parse(localStorage.getItem('workshop-tasks') ?? '[]') as string[]));
   const module = workshopModules[currentIndex];
-  const moduleContent = filterClientSections(module.content, track, showComparison);
+  const moduleContent = prepareLessonContent(filterClientSections(module.content, track, showComparison));
   const taskCount = workshopModules.reduce((total, item) => total + getTaskCount(item.content), 0);
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export function App() {
     const taskId = `${module.id}:${line}`;
     return <li {...props} className="task-item">
       <input type="checkbox" checked={completeTasks.has(taskId)} onChange={() => toggleTask(taskId)} aria-label={`Complete task at line ${line}`} />
-      <span>{children}</span>
+      <span className="task-content"><span className="task-prefix">Completed:</span>{children}</span>
     </li>;
   };
 

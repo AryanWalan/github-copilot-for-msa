@@ -48,6 +48,10 @@ During the workshop, your Copilot coding agent creates `samples/developer-workbe
 7. [Package validation behavior, curate links, and review the code](workshop-step-5-realworld-scenarios.md).
 8. [Carry the loop into your next project](workshop-step-6-next-steps.md).
 
+## Alternative workshop
+
+The independent [local job search workshop](job-search-workshop/application-specification.md) uses live coding and collaborative contributions to teach GitHub Copilot across the software development lifecycle. It includes a [student contribution checklist](job-search-workshop/student-contribution-checklist.md) and a concise [Copilot prompt guide](job-search-workshop/copilot-prompt-guide.md).
+
 ## MCP configuration
 
 The starter leaves documentation MCP configuration empty. In Step 3, you add Microsoft Learn and Context7 at workspace scope in VS Code Insiders or repository scope in Copilot CLI. After validation, configure the local Developer Workbench only for your primary client. Every shell command and file write requires your explicit approval.

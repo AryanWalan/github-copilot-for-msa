@@ -385,6 +385,7 @@ nav button.active {
   padding-top: 17px;
 }
 .lesson {
+  counter-reset: instructional-step;
   max-width: 780px;
 }
 .lesson-meta {
@@ -675,6 +676,23 @@ footer a {
   margin: 12px 0 20px;
   padding-left: 0;
 }
+.lesson > ol {
+  list-style: none;
+}
+.lesson > ol > li {
+  counter-increment: instructional-step;
+  padding-left: 26px;
+  position: relative;
+}
+.lesson > ol > li::before {
+  content: counter(instructional-step) ".";
+  left: 0;
+  position: absolute;
+}
+.lesson li ol,
+.lesson li ul {
+  padding-left: 24px;
+}
 .task-item {
   align-items: flex-start;
   display: flex;
@@ -689,10 +707,19 @@ footer a {
   margin: 4px 0 0;
   width: 17px;
 }
-.task-item > span {
+.task-content {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
   min-width: 0;
 }
-.task-item > span > input[type="checkbox"] {
+.task-prefix {
+  color: #57606a;
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+.task-content > input[type="checkbox"] {
   display: none;
 }
 .task-item ul,
