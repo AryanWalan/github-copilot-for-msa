@@ -73,12 +73,12 @@ Read spec/spec-developer-workbench-mcp.md. Propose a concise path-specific instr
 
 2. Review the proposed content. Approve the file write only when it includes all of the following:
 
-- [ ] An `applyTo` pattern for `samples/developer-workbench-mcp/**/*.ts`.
-- [ ] Strict TypeScript requirements.
-- [ ] MCP stdio discipline: protocol output on stdout and diagnostics on stderr.
-- [ ] The fixed bookmark-output boundary.
-- [ ] Focused validation before broader checks.
-- [ ] A requirement to ask about missing requirements rather than inventing them.
+	- [ ] An `applyTo` pattern for `samples/developer-workbench-mcp/**/*.ts`.
+	- [ ] Strict TypeScript requirements.
+	- [ ] MCP stdio discipline: protocol output on stdout and diagnostics on stderr.
+	- [ ] The fixed bookmark-output boundary.
+	- [ ] Focused validation before broader checks.
+	- [ ] A requirement to ask about missing requirements rather than inventing them.
 
 3. After the write is approved, ask Copilot to confirm that the instruction will apply to future matching project files.
 
@@ -98,13 +98,13 @@ Read the specification, then ask exactly five questions to make sure you underst
 
 2. Answer the five questions using the following agreed decisions when relevant:
 
-- Generate a Netscape bookmark HTML file instead of changing a browser profile.
-- Keep the output path fixed.
-- Accept only bounded HTTPS links.
-- Escape user-controlled HTML.
-- Preserve categories and links while rejecting canonical URL duplicates.
-- Write the output atomically.
-- Show proposed links before the `add_learning_links` write tool runs.
+	- Generate a Netscape bookmark HTML file instead of changing a browser profile.
+	- Keep the output path fixed.
+	- Accept only bounded HTTPS links.
+	- Escape user-controlled HTML.
+	- Preserve categories and links while rejecting canonical URL duplicates.
+	- Write the output atomically.
+	- Show proposed links before the `add_learning_links` write tool runs.
 
 3. Record the consequential assumption raised by the senior-engineer question and your answer.
 
