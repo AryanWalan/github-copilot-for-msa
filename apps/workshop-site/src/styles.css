@@ -117,6 +117,27 @@ h1 {
   background: #0969da;
   color: #fff;
 }
+.topbar-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+.repository-link {
+  align-items: center;
+  border: 1px solid #57606a;
+  border-radius: 6px;
+  color: #f0f6fc;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 42px;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  width: 42px;
+}
+.repository-link:hover {
+  background: #32383f;
+  border-color: #8c959f;
+}
 .landing,
 .workspace,
 footer {
@@ -525,12 +546,15 @@ footer a {
     padding: 16px 18px;
   }
   .track {
-    width: 100%;
+    flex: 1;
   }
   .track button {
     flex: 1;
     font-size: 12px;
     justify-content: center;
+  }
+  .topbar-actions {
+    width: 100%;
   }
   .landing {
     padding: 35px 18px;

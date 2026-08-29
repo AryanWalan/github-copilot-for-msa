@@ -94,9 +94,12 @@ export function App() {
   return <main className="shell">
     <header className="topbar">
       <button className="brand" onClick={() => changeModule(0)}><span className="eyebrow">MICROSOFT STUDENT ACCELERATOR</span><span>Agentic Development Workshop</span></button>
-      <div className="track" aria-label="Primary workshop client">
-        <button className={track === 'vscode' ? 'selected' : ''} onClick={() => setTrack('vscode')}><MonitorCog size={16} /> VS Code Insiders</button>
-        <button className={track === 'cli' ? 'selected' : ''} onClick={() => setTrack('cli')}><Terminal size={16} /> Copilot CLI</button>
+      <div className="topbar-actions">
+        <div className="track" aria-label="Primary workshop client">
+          <button className={track === 'vscode' ? 'selected' : ''} onClick={() => setTrack('vscode')}><MonitorCog size={16} /> VS Code Insiders</button>
+          <button className={track === 'cli' ? 'selected' : ''} onClick={() => setTrack('cli')}><Terminal size={16} /> Copilot CLI</button>
+        </div>
+        <a className="repository-link" href={repositoryUrl} target="_blank" rel="noreferrer" aria-label="Open workshop repository on GitHub" title="Open workshop repository on GitHub"><Github size={20} /></a>
       </div>
     </header>
     <div className="workspace">
