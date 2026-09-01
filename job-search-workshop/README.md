@@ -9,6 +9,8 @@ Local application for collecting and reviewing software-development roles availa
 
 ## Run locally
 
+Run these commands from the `job-search-workshop` directory:
+
 ```powershell
 npm install
 npm run dev
