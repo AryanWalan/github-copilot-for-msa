@@ -38,8 +38,6 @@ a {
 }
 
 .app-shell {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -175,6 +173,18 @@ main {
   justify-content: space-between;
   max-width: 1320px;
   margin: 0 auto 32px;
+}
+
+.refresh-control {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.refresh-timestamp {
+  color: var(--muted);
+  font-size: 0.82rem;
+  white-space: nowrap;
 }
 
 .primary-action,
@@ -463,6 +473,15 @@ td {
 
   .primary-action {
     width: 100%;
+  }
+
+  .refresh-control {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .refresh-timestamp {
+    text-align: center;
   }
 
   .search-form {

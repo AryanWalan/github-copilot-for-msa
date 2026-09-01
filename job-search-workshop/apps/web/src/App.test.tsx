@@ -39,8 +39,8 @@ describe("App", () => {
 
     render(<App />);
 
-    expect(await screen.findByText("No roles collected yet")).toBeVisible();
+    expect(await screen.findByText("No roles found yet")).toBeVisible();
     expect(screen.getByText("Xero")).toBeVisible();
-    expect(screen.getByRole("button", { name: "Collect roles" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Refresh" })).toBeEnabled();
   });
 });

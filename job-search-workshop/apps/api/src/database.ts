@@ -1,4 +1,5 @@
 import { mkdirSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname } from "node:path";
 
 import Database from "better-sqlite3";
@@ -98,6 +99,33 @@ export class JobFinderRepository {
       lastSeenAt: String(row.last_seen_at),
       status: String(row.status) as Listing["status"],
     }));
+  }
+
+  public saveListings(
+    source: Source,
+    listings: Array<Pick<Listing, "title" | "location" | "summary" | "sourceUrl">>,
+  ): void {
+    const seenAt = new Date().toISOString();
+    const save = this.database.prepare(
+      `INSERT INTO listings
+         (id, source_id, company_name, title, location, summary, posted_at, source_url, first_seen_at, last_seen_at, status)
+       VALUES (@id, @sourceId, @companyName, @title, @location, @summary, NULL, @sourceUrl, @seenAt, @seenAt, 'active')
+       ON CONFLICT(id) DO UPDATE SET
+         title = excluded.title, location = excluded.location, summary = excluded.summary,
+         last_seen_at = excluded.last_seen_at, status = 'active'`,
+    );
+    const transaction = this.database.transaction(() => {
+      for (const listing of listings) {
+        save.run({
+          id: createHash("sha256").update(`${source.id}:${listing.sourceUrl}`).digest("hex"),
+          sourceId: source.id,
+          companyName: source.name,
+          ...listing,
+          seenAt,
+        });
+      }
+    });
+    transaction();
   }
 
   public createCollectionRun(sourceCount: number): CollectionRun {
@@ -251,5 +279,13 @@ export class JobFinderRepository {
     });
 
     seed(candidateSources);
+
+    const update = this.database.prepare(
+      `UPDATE sources SET name = @name, careers_url = @careersUrl, endpoint_url = @endpointUrl,
+       source_type = @sourceType, enabled = @enabled, policy_status = @policyStatus WHERE id = @id`,
+    );
+    for (const source of candidateSources) {
+      update.run({ ...source, enabled: source.enabled ? 1 : 0 });
+    }
   }
 }

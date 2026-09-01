@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 import {
-  CheckCircle2,
   CircleAlert,
-  Clock3,
-  Database,
   ExternalLink,
   MapPin,
   RefreshCw,
   Search,
 } from "lucide-react";
 
-import { getLatestRun, getListings, getSources, startCollection } from "./api";
-import type { CollectionRun, Listing, Source } from "./types";
+import { getLatestRun, getListings, startCollection } from "./api";
+import type { CollectionRun, Listing } from "./types";
 
 function formatTimestamp(value: string | null): string {
   if (!value) {
@@ -24,8 +21,8 @@ function formatTimestamp(value: string | null): string {
 }
 
 export default function App() {
-  const [sources, setSources] = useState<Source[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
+  const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [run, setRun] = useState<CollectionRun | null>(null);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -35,10 +32,9 @@ export default function App() {
   useEffect(() => {
     let active = true;
 
-    Promise.all([getSources(), getListings(), getLatestRun()])
-      .then(([nextSources, nextListings, latestRun]) => {
+    Promise.all([getListings(), getLatestRun()])
+      .then(([nextListings, latestRun]) => {
         if (!active) return;
-        setSources(nextSources);
         setListings(nextListings);
         setRun(latestRun);
       })
@@ -69,7 +65,10 @@ export default function App() {
           setRun(latestRun);
           if (latestRun?.status !== "running") {
             setCollecting(false);
-            void getListings().then(setListings);
+            void getListings().then((nextListings) => {
+              setListings(nextListings);
+              setSelectedListing(null);
+            });
           }
         })
         .catch((pollError: unknown) => {
@@ -105,6 +104,7 @@ export default function App() {
     setError(null);
     try {
       setListings(await getListings(search.trim()));
+      setSelectedListing(null);
     } catch (searchError) {
       setError(
         searchError instanceof Error ? searchError.message : "Search failed.",
@@ -112,96 +112,35 @@ export default function App() {
     }
   }
 
-  const approvedSourceCount = sources.filter(
-    (source) => source.policyStatus === "approved",
-  ).length;
-
   return (
     <div className="app-shell">
-      <aside className="source-rail">
-        <div className="brand-mark" aria-hidden="true">
-          JF
-        </div>
-        <div>
-          <p className="eyebrow">Source registry</p>
-          <h2>{sources.length || 8} candidates</h2>
-        </div>
-
-        <div className="source-list" aria-label="Configured sources">
-          {sources.map((source) => (
-            <a
-              className="source-row"
-              href={source.careersUrl}
-              key={source.id}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <span className={`status-dot status-${source.policyStatus}`} />
-              <span>
-                <strong>{source.name}</strong>
-                <small>{source.enabled ? "Enabled" : "Review pending"}</small>
-              </span>
-              <ExternalLink size={14} aria-hidden="true" />
-            </a>
-          ))}
-        </div>
-
-        <div className="rail-summary">
-          <CheckCircle2 size={17} aria-hidden="true" />
-          <span>{approvedSourceCount} approved</span>
-        </div>
-      </aside>
-
       <main>
         <header className="page-header">
           <div>
             <p className="eyebrow">New Zealand software roles</p>
             <h1>Job Finder</h1>
           </div>
-          <button
-            className="primary-action"
-            disabled={collecting || run?.status === "running"}
-            onClick={() => void handleCollection()}
-            type="button"
-          >
-            <RefreshCw
-              className={collecting || run?.status === "running" ? "spin" : ""}
-              size={18}
-              aria-hidden="true"
-            />
-            {collecting || run?.status === "running"
-              ? "Collecting"
-              : "Collect roles"}
-          </button>
+          <div className="refresh-control">
+            <span className="refresh-timestamp">
+              Last refreshed {formatTimestamp(run?.completedAt ?? null)}
+            </span>
+            <button
+              className="primary-action"
+              disabled={collecting || run?.status === "running"}
+              onClick={() => void handleCollection()}
+              type="button"
+            >
+              <RefreshCw
+                className={collecting || run?.status === "running" ? "spin" : ""}
+                size={18}
+                aria-hidden="true"
+              />
+              {collecting || run?.status === "running"
+                ? "Refreshing"
+                : "Refresh"}
+            </button>
+          </div>
         </header>
-
-        <section className="status-band" aria-label="Collection status">
-          <div>
-            <Clock3 size={19} aria-hidden="true" />
-            <span>
-              <small>Last collection</small>
-              <strong>{formatTimestamp(run?.completedAt ?? null)}</strong>
-            </span>
-          </div>
-          <div>
-            <Database size={19} aria-hidden="true" />
-            <span>
-              <small>Stored roles</small>
-              <strong>{listings.length}</strong>
-            </span>
-          </div>
-          <div>
-            <CircleAlert size={19} aria-hidden="true" />
-            <span>
-              <small>Source outcomes</small>
-              <strong>
-                {run
-                  ? `${run.successCount} ok / ${run.skippedCount} skipped / ${run.failureCount} failed`
-                  : "No runs yet"}
-              </strong>
-            </span>
-          </div>
-        </section>
 
         {error && (
           <div className="error-banner" role="alert">
@@ -214,7 +153,7 @@ export default function App() {
           <div className="section-toolbar">
             <div>
               <p className="eyebrow">Current results</p>
-              <h2>Software roles</h2>
+              <h2>Software roles ({listings.length})</h2>
             </div>
             <form
               className="search-form"
@@ -238,15 +177,13 @@ export default function App() {
           {loading ? (
             <div className="empty-state" aria-live="polite">
               <RefreshCw className="spin" size={24} aria-hidden="true" />
-              <strong>Loading local data</strong>
+              <strong>Loading roles</strong>
             </div>
           ) : listings.length === 0 ? (
             <div className="empty-state">
-              <Database size={28} aria-hidden="true" />
-              <strong>No roles collected yet</strong>
+              <strong>No roles found yet</strong>
               <p>
-                Sources remain disabled until their endpoint and collection
-                policy are verified.
+                Select Refresh to check for current vacancies.
               </p>
             </div>
           ) : (
@@ -257,13 +194,16 @@ export default function App() {
                     <th>Role</th>
                     <th>Company</th>
                     <th>Location</th>
-                    <th>Freshness</th>
                     <th aria-label="Open source" />
                   </tr>
                 </thead>
                 <tbody>
                   {listings.map((listing) => (
-                    <tr key={listing.id}>
+                    <tr
+                      className={selectedListing?.id === listing.id ? "selected" : ""}
+                      key={listing.id}
+                      onClick={() => setSelectedListing(listing)}
+                    >
                       <td>
                         <strong>{listing.title}</strong>
                       </td>
@@ -272,11 +212,6 @@ export default function App() {
                         <span className="location">
                           <MapPin size={14} aria-hidden="true" />
                           {listing.location ?? "Not provided"}
-                        </span>
-                      </td>
-                      <td>
-                        <span className={`listing-status ${listing.status}`}>
-                          {listing.status}
                         </span>
                       </td>
                       <td>
@@ -298,6 +233,22 @@ export default function App() {
             </div>
           )}
         </section>
+
+        {selectedListing && (
+          <section className="listing-detail" aria-labelledby="listing-detail-title">
+            <p className="eyebrow">Role details</p>
+            <h2 id="listing-detail-title">{selectedListing.title}</h2>
+            <dl>
+              <div><dt>Company</dt><dd>{selectedListing.companyName}</dd></div>
+              <div><dt>Location</dt><dd>{selectedListing.location ?? "Not provided"}</dd></div>
+              <div><dt>Collected</dt><dd>{formatTimestamp(selectedListing.lastSeenAt)}</dd></div>
+            </dl>
+            <p>{selectedListing.summary ?? "Open the original listing for the full job description."}</p>
+            <a className="primary-action" href={selectedListing.sourceUrl} rel="noreferrer" target="_blank">
+              View original listing <ExternalLink size={18} aria-hidden="true" />
+            </a>
+          </section>
+        )}
       </main>
     </div>
   );
