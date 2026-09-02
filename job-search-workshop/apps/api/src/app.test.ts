@@ -34,7 +34,14 @@ describe("job finder API", () => {
       "fetch",
       vi.fn().mockResolvedValue(
         new Response(
-          '<a href="https://careers.xero.com/jobs/f864bae7-8238-4123-9251-24d2e7fd63da/software-engineer/">Software Engineer</a>',
+          [
+            '<a href="https://careers.xero.com/jobs/f864bae7-8238-4123-9251-24d2e7fd63da/software-engineer/">Software Engineer</a>',
+            '<span>US: Remote, Washington, United States</span>',
+            '<a href="https://careers.xero.com/jobs/40a09a30-ab3b-4d65-af9b-728b8da13907/customer-incident-manager/">Customer Incident Manager</a>',
+            '<span>Parnell, Auckland, New Zealand</span>',
+            '<a href="https://www.serko.com/job-listing/principal-engineer-serkoai-auckland-new-zealand"><span>Principal Engineer - Serko.ai</span><span>Auckland, New Zealand</span></a>',
+            '<a href="https://www.serko.com/job-listing/principal-engineer-ai-platform-operations-seattle-united-states">Principal Engineer - AI Platform &amp; Operations Seattle, Washington, United States Full-time</a>',
+          ].join(""),
         ),
       ),
     );
@@ -57,6 +64,21 @@ describe("job finder API", () => {
       successCount: 6,
       skippedCount: 0,
     });
+
+    const listingsResponse = await request(app).get("/api/listings").expect(200);
+    expect(listingsResponse.body.listings).toHaveLength(2);
+    expect(listingsResponse.body.listings).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        title: "Customer Incident Manager",
+        location: "Parnell, Auckland, New Zealand",
+        sourceId: "xero",
+      }),
+      expect.objectContaining({
+        title: "Principal Engineer - Serko.ai",
+        location: "Auckland, New Zealand",
+        sourceId: "serko",
+      }),
+    ]));
   });
 
   it("returns an empty listing collection before a source is enabled", async () => {
