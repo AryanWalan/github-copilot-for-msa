@@ -1,4 +1,11 @@
 export type SourceStatus = "approved" | "pending" | "rejected";
+export type PreferredRole =
+  | "any"
+  | "software"
+  | "platform"
+  | "management"
+  | "data-security"
+  | "qa";
 
 export interface Source {
   id: string;
@@ -23,10 +30,10 @@ export interface Listing {
   firstSeenAt: string;
   lastSeenAt: string;
   status: "active" | "stale" | "unavailable";
-  benefitsScore?: number;
+  benefitsScore?: number | null;
   benefitsReasons?: string[];
-  locationScore?: number;
-  matchScore?: number;
+  roleScore?: number;
+  matchScore?: number | null;
   rankingReasons?: string[];
 }
 
@@ -37,6 +44,7 @@ export interface ListingFilters {
   sourceId?: string;
   benefits?: string;
   rankByBenefits?: boolean;
+  preferredRole?: PreferredRole;
 }
 
 export interface CollectionRun {

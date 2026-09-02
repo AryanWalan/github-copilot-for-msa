@@ -37,6 +37,7 @@ describe("job finder API", () => {
       "<span>Parnell, Auckland, New Zealand</span>",
       '<a href="https://www.serko.com/job-listing/principal-engineer-serkoai-auckland-new-zealand"><span>Principal Engineer - Serko.ai</span><span>Auckland, New Zealand</span></a>',
       '<a href="https://www.serko.com/job-listing/principal-engineer-ai-platform-operations-seattle-united-states">Principal Engineer - AI Platform &amp; Operations Seattle, Washington, United States Full-time</a>',
+      "<li data-company='Pushpay' data-department='Engineering' data-office='Auckland'><a href='https://job-boards.greenhouse.io/pushpay/jobs/8123050'>Engineering Manager</a></li>",
     ].join("");
     vi.stubGlobal(
       "fetch",
@@ -67,7 +68,7 @@ describe("job finder API", () => {
     const listingsResponse = await request(app)
       .get("/api/listings")
       .expect(200);
-    expect(listingsResponse.body.listings).toHaveLength(2);
+    expect(listingsResponse.body.listings).toHaveLength(3);
     expect(listingsResponse.body.listings).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -79,6 +80,29 @@ describe("job finder API", () => {
           title: "Principal Engineer - Serko.ai",
           location: "Auckland, New Zealand",
           sourceId: "serko",
+        }),
+        expect.objectContaining({
+          title: "Engineering Manager",
+          location: "Auckland, New Zealand",
+          sourceId: "pushpay",
+        }),
+      ]),
+    );
+
+    const rankedResponse = await request(app)
+      .get("/api/listings?rank=benefits&role=management")
+      .expect(200);
+    expect(rankedResponse.body.listings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          title: "Engineering Manager",
+          roleScore: 10,
+          matchScore: 10,
+          rankingReasons: [
+            "Matches preferred role: engineering management",
+            "Benefits not provided or not recognized",
+            "Score limited because some data is unavailable",
+          ],
         }),
       ]),
     );
@@ -130,33 +154,35 @@ describe("job finder API", () => {
     const rankedResponse = await request(app)
       .get("/api/listings?rank=benefits")
       .expect(200);
-    expect(rankedResponse.body.listings).toEqual([
-      expect.objectContaining({
-        title: "Benefits-rich role",
-        benefitsScore: 4,
-        locationScore: 0,
-        matchScore: 2,
-        benefitsReasons: [
-          "health insurance",
-          "flexible work",
-          "professional development",
-        ],
-      }),
-      expect.objectContaining({
-        title: "Benefits-light role",
-        benefitsScore: 1,
-        locationScore: 0,
-        matchScore: 1,
-        benefitsReasons: ["flexible work"],
-      }),
-      expect.objectContaining({
-        title: "Benefits unknown role",
-        benefits: null,
-        benefitsScore: 0,
-        locationScore: 0,
-        matchScore: 0,
-        benefitsReasons: [],
-      }),
-    ]);
+    expect(rankedResponse.body.listings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          title: "Benefits-rich role",
+          benefitsScore: 4,
+          roleScore: 2,
+          matchScore: 3,
+          benefitsReasons: [
+            "health insurance",
+            "flexible work",
+            "professional development",
+          ],
+        }),
+        expect.objectContaining({
+          title: "Benefits-light role",
+          benefitsScore: 1,
+          roleScore: 2,
+          matchScore: 2,
+          benefitsReasons: ["flexible work"],
+        }),
+        expect.objectContaining({
+          title: "Benefits unknown role",
+          benefits: null,
+          benefitsScore: null,
+          roleScore: 2,
+          matchScore: 2,
+          benefitsReasons: [],
+        }),
+      ]),
+    );
   });
 });

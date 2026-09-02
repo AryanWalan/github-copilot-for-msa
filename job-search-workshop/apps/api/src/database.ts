@@ -5,10 +5,11 @@ import { dirname } from "node:path";
 import Database from "better-sqlite3";
 
 import type {
-  CollectionRun,
-  Listing,
-  ListingFilters,
-  Source,
+    CollectionRun,
+    Listing,
+    ListingFilters,
+    PreferredRole,
+    Source,
 } from "./models.js";
 import { candidateSources } from "./sources.js";
 
@@ -31,16 +32,38 @@ function benefitsReasons(benefits: string | null): string[] {
   );
 }
 
-function locationAssessment(location: string | null): {
-  score: number;
-  reason: string;
-} {
-  if (!location) return { score: 0, reason: "Location not provided" };
-  if (/new zealand/i.test(location)) {
-    return { score: 10, reason: "New Zealand location" };
-  }
-  if (/remote/i.test(location)) return { score: 7, reason: "Remote location" };
-  return { score: 0, reason: "Outside New Zealand" };
+const ROLE_SIGNALS = [
+  [
+    "software",
+    "software engineering or development",
+    /software engineer|software developer|web developer|frontend|backend|full stack|mobile developer/i,
+    10,
+  ],
+  [
+    "platform",
+    "platform, DevOps, or reliability engineering",
+    /platform engineer|DevOps engineer|site reliability engineer|SRE/i,
+    9,
+  ],
+  ["management", "engineering management", /engineering manager/i, 8],
+  ["data-security", "data or security engineering", /data engineer|security engineer/i, 7],
+  ["qa", "QA automation", /QA automation|test automation/i, 7],
+] as const;
+
+function roleAssessment(
+  title: string,
+  preferredRole: PreferredRole = "any",
+): { score: number; reason: string } {
+  const signal = ROLE_SIGNALS.find(([, , pattern]) => pattern.test(title));
+  return signal
+    ? {
+        score: preferredRole === signal[0] ? 10 : signal[3],
+        reason:
+          preferredRole === signal[0]
+            ? `Matches preferred role: ${signal[1]}`
+            : signal[1],
+      }
+    : { score: 2, reason: "No specific software engineering title signal" };
 }
 
 export class JobFinderRepository {
@@ -139,28 +162,35 @@ export class JobFinderRepository {
     return listings
       .map((listing) => {
         const matchedBenefits = benefitsReasons(listing.benefits);
-        const benefitsScore = Math.round(
-          (matchedBenefits.length / BENEFIT_SIGNALS.length) * 10,
-        );
-        const location = locationAssessment(listing.location);
+        const benefitsScore = listing.benefits
+          ? Math.round((matchedBenefits.length / BENEFIT_SIGNALS.length) * 10)
+          : null;
+        const role = roleAssessment(listing.title, filters.preferredRole);
+        const matchScore =
+          benefitsScore === null
+            ? role.score
+            : Math.round(role.score * 0.7 + benefitsScore * 0.3);
         return {
           ...listing,
           benefitsScore,
           benefitsReasons: matchedBenefits,
-          locationScore: location.score,
-          matchScore: Math.round(benefitsScore * 0.6 + location.score * 0.4),
+          roleScore: role.score,
+          matchScore,
           rankingReasons: [
+            role.reason,
             ...(matchedBenefits.length > 0
               ? matchedBenefits
               : ["Benefits not provided or not recognized"]),
-            location.reason,
+            ...(benefitsScore === null
+              ? ["Score limited because some data is unavailable"]
+              : []),
           ],
         };
       })
       .sort(
         (left, right) =>
-          right.matchScore - left.matchScore ||
-          right.benefitsScore - left.benefitsScore ||
+          (right.matchScore ?? -1) - (left.matchScore ?? -1) ||
+          (right.benefitsScore ?? -1) - (left.benefitsScore ?? -1) ||
           right.lastSeenAt.localeCompare(left.lastSeenAt) ||
           left.title.localeCompare(right.title),
       );

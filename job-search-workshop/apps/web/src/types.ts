@@ -21,12 +21,20 @@ export interface Listing {
   firstSeenAt: string;
   lastSeenAt: string;
   status: "active" | "stale" | "unavailable";
-  benefitsScore?: number;
+  benefitsScore?: number | null;
   benefitsReasons?: string[];
-  locationScore?: number;
-  matchScore?: number;
+  roleScore?: number;
+  matchScore?: number | null;
   rankingReasons?: string[];
 }
+
+export type PreferredRole =
+  | "any"
+  | "software"
+  | "platform"
+  | "management"
+  | "data-security"
+  | "qa";
 
 export interface CollectionRun {
   id: string;

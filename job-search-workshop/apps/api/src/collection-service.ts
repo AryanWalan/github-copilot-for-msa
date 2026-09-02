@@ -43,6 +43,12 @@ function extractSerkoLocation(value: string): string | null {
   return location?.[0] ?? null;
 }
 
+function extractPushpayLocation(value: string): string | null {
+  const office = value.match(/data-office=['"]([^'"]+)['"]/i)?.[1];
+  if (!office) return null;
+  return /new zealand/i.test(office) ? office : `${office}, New Zealand`;
+}
+
 function extractListings(
   source: Source,
   html: string,
@@ -80,12 +86,20 @@ function extractListings(
 
     const nextMatch = matches[index + 1];
     const nextMatchIndex = nextMatch?.index ?? html.length;
+    const itemStart = html.lastIndexOf("<li", match.index ?? 0);
+    const itemEnd = html.indexOf("</li>", match.index ?? 0);
+    const pushpayItem =
+      source.id === "pushpay" && itemStart >= 0 && itemEnd >= itemStart
+        ? html.slice(itemStart, itemEnd)
+        : "";
     const location =
       source.id === "xero"
         ? extractXeroLocation(
             html.slice((match.index ?? 0) + match[0].length, nextMatchIndex),
           )
-        : serkoLocation;
+        : source.id === "pushpay"
+          ? extractPushpayLocation(pushpayItem)
+          : serkoLocation;
     if (
       (source.id === "xero" || source.id === "serko") &&
       !location?.endsWith("New Zealand")

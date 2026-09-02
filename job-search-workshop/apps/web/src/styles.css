@@ -288,10 +288,12 @@ main {
 
 .search-form {
   display: grid;
-  grid-template-columns: 20px minmax(220px, 1fr) minmax(150px, 220px) auto auto;
+  grid-template-columns:
+    20px minmax(200px, 1fr) minmax(150px, 210px) minmax(190px, 240px)
+    auto auto;
   gap: 8px;
   align-items: center;
-  width: min(100%, 820px);
+  width: min(100%, 960px);
 }
 
 .search-form svg {
@@ -314,17 +316,23 @@ main {
   outline-offset: 1px;
 }
 
-.ranking-toggle {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  color: var(--ink);
-  font-size: 0.82rem;
-  white-space: nowrap;
+.preferred-role {
+  display: grid;
+  gap: 3px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.ranking-toggle input {
-  accent-color: var(--teal);
+.preferred-role select {
+  min-height: 42px;
+  padding: 0 28px 0 10px;
+  color: var(--ink);
+  background: white;
+  border: 1px solid #bdc8c3;
+  border-radius: 3px;
+  font-size: 0.82rem;
 }
 
 .empty-state {
@@ -538,8 +546,12 @@ td {
   }
 
   .search-form input,
-  .ranking-toggle {
+  .preferred-role {
     grid-column: 1 / -1;
+  }
+
+  .preferred-role select {
+    width: 100%;
   }
 
   .search-form button {

@@ -1,14 +1,14 @@
 import {
-    CircleAlert,
-    ExternalLink,
-    MapPin,
-    RefreshCw,
-    Search,
+  CircleAlert,
+  ExternalLink,
+  MapPin,
+  RefreshCw,
+  Search,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { getLatestRun, getListings, startCollection } from "./api";
-import type { CollectionRun, Listing } from "./types";
+import type { CollectionRun, Listing, PreferredRole } from "./types";
 
 function formatTimestamp(value: string | null): string {
   if (!value) {
@@ -20,8 +20,8 @@ function formatTimestamp(value: string | null): string {
   }).format(new Date(value));
 }
 
-function scoreTone(score: number | undefined): string {
-  if (score === undefined) return "";
+function scoreTone(score: number | null | undefined): string {
+  if (score === null || score === undefined) return "";
   if (score >= 7) return "score-high";
   if (score >= 4) return "score-mid";
   return "score-low";
@@ -32,8 +32,7 @@ export default function App() {
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [run, setRun] = useState<CollectionRun | null>(null);
   const [search, setSearch] = useState("");
-  const [benefits, setBenefits] = useState("");
-  const [rankByBenefits, setRankByBenefits] = useState(true);
+  const [preferredRole, setPreferredRole] = useState<PreferredRole>("any");
   const [loading, setLoading] = useState(true);
   const [collecting, setCollecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +41,7 @@ export default function App() {
     let active = true;
 
     Promise.all([
-      getListings("", { rankByBenefits: true }),
+      getListings("", { rankByBenefits: true, preferredRole: "any" }),
       getLatestRun(),
     ])
       .then(([nextListings, latestRun]) => {
@@ -78,8 +77,8 @@ export default function App() {
           if (latestRun?.status !== "running") {
             setCollecting(false);
             void getListings(search.trim(), {
-              benefits: benefits.trim(),
-              rankByBenefits,
+              rankByBenefits: true,
+              preferredRole,
             }).then((nextListings) => {
               setListings(nextListings);
               setSelectedListing(null);
@@ -97,7 +96,7 @@ export default function App() {
     }, 750);
 
     return () => window.clearInterval(timer);
-  }, [run?.status]);
+  }, [preferredRole, run?.status, search]);
 
   async function handleCollection(): Promise<void> {
     setError(null);
@@ -120,8 +119,8 @@ export default function App() {
     try {
       setListings(
         await getListings(search.trim(), {
-          benefits: benefits.trim(),
-          rankByBenefits,
+          rankByBenefits: true,
+          preferredRole,
         }),
       );
       setSelectedListing(null);
@@ -192,20 +191,24 @@ export default function App() {
                 type="search"
                 value={search}
               />
-              <input
-                aria-label="Filter by benefits"
-                onChange={(event) => setBenefits(event.target.value)}
-                placeholder="Benefits"
-                type="search"
-                value={benefits}
-              />
-              <label className="ranking-toggle">
-                <input
-                  checked={rankByBenefits}
-                  onChange={(event) => setRankByBenefits(event.target.checked)}
-                  type="checkbox"
-                />
-                Rank by NZ fit and benefits
+              <label className="preferred-role">
+                Preferred role
+                <select
+                  aria-label="Preferred role"
+                  onChange={(event) =>
+                    setPreferredRole(event.target.value as PreferredRole)
+                  }
+                  value={preferredRole}
+                >
+                  <option value="any">Any software role</option>
+                  <option value="software">Software development</option>
+                  <option value="platform">Platform / DevOps / SRE</option>
+                  <option value="management">Engineering management</option>
+                  <option value="data-security">
+                    Data / security engineering
+                  </option>
+                  <option value="qa">QA automation</option>
+                </select>
               </label>
               <button type="submit">Search</button>
             </form>
@@ -251,20 +254,15 @@ export default function App() {
                           <MapPin size={14} aria-hidden="true" />
                           {listing.location ?? "Not provided"}
                         </span>
-                        {listing.locationScore !== undefined && (
-                          <small
-                            className={`score-note ${scoreTone(listing.locationScore)}`}
-                          >
-                            {listing.locationScore}/10 NZ fit
-                          </small>
-                        )}
                       </td>
                       <td>
                         {listing.matchScore !== undefined && (
                           <strong
                             className={`score-note ${scoreTone(listing.matchScore)}`}
                           >
-                            {listing.matchScore}/10
+                            {listing.matchScore === null
+                              ? "N/A"
+                              : `${listing.matchScore}/10`}
                           </strong>
                         )}
                       </td>
@@ -316,11 +314,16 @@ export default function App() {
             {selectedListing.benefitsScore !== undefined && (
               <div className="comparison-summary">
                 <strong className={scoreTone(selectedListing.matchScore)}>
-                  Match score: {selectedListing.matchScore}/10
+                  Match score:{" "}
+                  {selectedListing.matchScore === null
+                    ? "N/A"
+                    : `${selectedListing.matchScore}/10`}
                 </strong>
                 <span>
-                  Benefits {selectedListing.benefitsScore}/10; New Zealand fit{" "}
-                  {selectedListing.locationScore}/10
+                  Role relevance {selectedListing.roleScore}/10; Benefits{" "}
+                  {selectedListing.benefitsScore === null
+                    ? "N/A"
+                    : `${selectedListing.benefitsScore}/10`}
                 </span>
                 <span>{selectedListing.rankingReasons?.join("; ")}</span>
               </div>

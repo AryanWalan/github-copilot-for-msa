@@ -30,7 +30,7 @@ describe("App", () => {
     expect(screen.getByRole("button", { name: "Refresh" })).toBeEnabled();
   });
 
-  it("submits a benefits filter and ranking choice", async () => {
+  it("submits a preferred role ranking choice", async () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(jsonResponse({ listings: [] }))
@@ -40,18 +40,15 @@ describe("App", () => {
 
     render(<App />);
     await screen.findByText("No roles found yet");
-    const benefitsInput = screen.getByRole("searchbox", {
-      name: "Filter by benefits",
-    });
     const user = userEvent.setup();
-    await user.type(benefitsInput, "insurance");
-    expect(
-      screen.getByRole("checkbox", { name: "Rank by NZ fit and benefits" }),
-    ).toBeChecked();
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Preferred role" }),
+      "platform",
+    );
     await user.click(screen.getByRole("button", { name: "Search" }));
 
     expect(fetchMock).toHaveBeenLastCalledWith(
-      "/api/listings?benefits=insurance&rank=benefits",
+      "/api/listings?rank=benefits&role=platform",
       undefined,
     );
   });

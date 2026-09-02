@@ -1,4 +1,4 @@
-import type { CollectionRun, Listing, Source } from "./types";
+import type { CollectionRun, Listing, PreferredRole, Source } from "./types";
 
 async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, init);
@@ -20,12 +20,19 @@ export async function getSources(): Promise<Source[]> {
 
 export async function getListings(
   search = "",
-  options: { benefits?: string; rankByBenefits?: boolean } = {},
+  options: {
+    benefits?: string;
+    rankByBenefits?: boolean;
+    preferredRole?: PreferredRole;
+  } = {},
 ): Promise<Listing[]> {
   const params = new URLSearchParams();
   if (search) params.set("search", search);
   if (options.benefits) params.set("benefits", options.benefits);
   if (options.rankByBenefits) params.set("rank", "benefits");
+  if (options.preferredRole && options.preferredRole !== "any") {
+    params.set("role", options.preferredRole);
+  }
   const query = params.size > 0 ? `?${params.toString()}` : "";
   const result = await requestJson<{ listings: Listing[] }>(
     `/api/listings${query}`,

@@ -1,13 +1,28 @@
 import express from "express";
 
 import {
-  CollectionAlreadyRunningError,
-  CollectionService,
+    CollectionAlreadyRunningError,
+    CollectionService,
 } from "./collection-service.js";
 import { JobFinderRepository } from "./database.js";
+import type { PreferredRole } from "./models.js";
 
 function optionalQuery(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function preferredRoleQuery(value: unknown): PreferredRole {
+  const roles: PreferredRole[] = [
+    "any",
+    "software",
+    "platform",
+    "management",
+    "data-security",
+    "qa",
+  ];
+  return typeof value === "string" && roles.includes(value as PreferredRole)
+    ? (value as PreferredRole)
+    : "any";
 }
 
 export function createApp(repository: JobFinderRepository) {
@@ -33,6 +48,7 @@ export function createApp(repository: JobFinderRepository) {
       sourceId: optionalQuery(request.query.source),
       benefits: optionalQuery(request.query.benefits),
       rankByBenefits: request.query.rank === "benefits",
+      preferredRole: preferredRoleQuery(request.query.role),
     });
     response.json({ listings });
   });
