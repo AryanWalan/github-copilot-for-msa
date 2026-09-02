@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
 import {
-  CircleAlert,
-  ExternalLink,
-  MapPin,
-  RefreshCw,
-  Search,
+    CircleAlert,
+    ExternalLink,
+    MapPin,
+    RefreshCw,
+    Search,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { getLatestRun, getListings, startCollection } from "./api";
 import type { CollectionRun, Listing } from "./types";
@@ -20,11 +20,20 @@ function formatTimestamp(value: string | null): string {
   }).format(new Date(value));
 }
 
+function scoreTone(score: number | undefined): string {
+  if (score === undefined) return "";
+  if (score >= 7) return "score-high";
+  if (score >= 4) return "score-mid";
+  return "score-low";
+}
+
 export default function App() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [run, setRun] = useState<CollectionRun | null>(null);
   const [search, setSearch] = useState("");
+  const [benefits, setBenefits] = useState("");
+  const [rankByBenefits, setRankByBenefits] = useState(true);
   const [loading, setLoading] = useState(true);
   const [collecting, setCollecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +41,10 @@ export default function App() {
   useEffect(() => {
     let active = true;
 
-    Promise.all([getListings(), getLatestRun()])
+    Promise.all([
+      getListings("", { rankByBenefits: true }),
+      getLatestRun(),
+    ])
       .then(([nextListings, latestRun]) => {
         if (!active) return;
         setListings(nextListings);
@@ -65,7 +77,10 @@ export default function App() {
           setRun(latestRun);
           if (latestRun?.status !== "running") {
             setCollecting(false);
-            void getListings().then((nextListings) => {
+            void getListings(search.trim(), {
+              benefits: benefits.trim(),
+              rankByBenefits,
+            }).then((nextListings) => {
               setListings(nextListings);
               setSelectedListing(null);
             });
@@ -103,7 +118,12 @@ export default function App() {
     event.preventDefault();
     setError(null);
     try {
-      setListings(await getListings(search.trim()));
+      setListings(
+        await getListings(search.trim(), {
+          benefits: benefits.trim(),
+          rankByBenefits,
+        }),
+      );
       setSelectedListing(null);
     } catch (searchError) {
       setError(
@@ -131,7 +151,9 @@ export default function App() {
               type="button"
             >
               <RefreshCw
-                className={collecting || run?.status === "running" ? "spin" : ""}
+                className={
+                  collecting || run?.status === "running" ? "spin" : ""
+                }
                 size={18}
                 aria-hidden="true"
               />
@@ -170,6 +192,21 @@ export default function App() {
                 type="search"
                 value={search}
               />
+              <input
+                aria-label="Filter by benefits"
+                onChange={(event) => setBenefits(event.target.value)}
+                placeholder="Benefits"
+                type="search"
+                value={benefits}
+              />
+              <label className="ranking-toggle">
+                <input
+                  checked={rankByBenefits}
+                  onChange={(event) => setRankByBenefits(event.target.checked)}
+                  type="checkbox"
+                />
+                Rank by NZ fit and benefits
+              </label>
               <button type="submit">Search</button>
             </form>
           </div>
@@ -182,9 +219,7 @@ export default function App() {
           ) : listings.length === 0 ? (
             <div className="empty-state">
               <strong>No roles found yet</strong>
-              <p>
-                Select Refresh to check for current vacancies.
-              </p>
+              <p>Select Refresh to check for current vacancies.</p>
             </div>
           ) : (
             <div className="listing-table-wrap">
@@ -194,13 +229,16 @@ export default function App() {
                     <th>Role</th>
                     <th>Company</th>
                     <th>Location</th>
+                    <th>Rank</th>
                     <th aria-label="Open source" />
                   </tr>
                 </thead>
                 <tbody>
                   {listings.map((listing) => (
                     <tr
-                      className={selectedListing?.id === listing.id ? "selected" : ""}
+                      className={
+                        selectedListing?.id === listing.id ? "selected" : ""
+                      }
                       key={listing.id}
                       onClick={() => setSelectedListing(listing)}
                     >
@@ -213,6 +251,22 @@ export default function App() {
                           <MapPin size={14} aria-hidden="true" />
                           {listing.location ?? "Not provided"}
                         </span>
+                        {listing.locationScore !== undefined && (
+                          <small
+                            className={`score-note ${scoreTone(listing.locationScore)}`}
+                          >
+                            {listing.locationScore}/10 NZ fit
+                          </small>
+                        )}
+                      </td>
+                      <td>
+                        {listing.matchScore !== undefined && (
+                          <strong
+                            className={`score-note ${scoreTone(listing.matchScore)}`}
+                          >
+                            {listing.matchScore}/10
+                          </strong>
+                        )}
                       </td>
                       <td>
                         <a
@@ -235,17 +289,50 @@ export default function App() {
         </section>
 
         {selectedListing && (
-          <section className="listing-detail" aria-labelledby="listing-detail-title">
+          <section
+            className="listing-detail"
+            aria-labelledby="listing-detail-title"
+          >
             <p className="eyebrow">Role details</p>
             <h2 id="listing-detail-title">{selectedListing.title}</h2>
             <dl>
-              <div><dt>Company</dt><dd>{selectedListing.companyName}</dd></div>
-              <div><dt>Location</dt><dd>{selectedListing.location ?? "Not provided"}</dd></div>
-              <div><dt>Collected</dt><dd>{formatTimestamp(selectedListing.lastSeenAt)}</dd></div>
+              <div>
+                <dt>Company</dt>
+                <dd>{selectedListing.companyName}</dd>
+              </div>
+              <div>
+                <dt>Location</dt>
+                <dd>{selectedListing.location ?? "Not provided"}</dd>
+              </div>
+              <div>
+                <dt>Collected</dt>
+                <dd>{formatTimestamp(selectedListing.lastSeenAt)}</dd>
+              </div>
             </dl>
-            <p>{selectedListing.summary ?? "Open the original listing for the full job description."}</p>
-            <a className="primary-action" href={selectedListing.sourceUrl} rel="noreferrer" target="_blank">
-              View original listing <ExternalLink size={18} aria-hidden="true" />
+            <p>
+              {selectedListing.summary ??
+                "Open the original listing for the full job description."}
+            </p>
+            {selectedListing.benefitsScore !== undefined && (
+              <div className="comparison-summary">
+                <strong className={scoreTone(selectedListing.matchScore)}>
+                  Match score: {selectedListing.matchScore}/10
+                </strong>
+                <span>
+                  Benefits {selectedListing.benefitsScore}/10; New Zealand fit{" "}
+                  {selectedListing.locationScore}/10
+                </span>
+                <span>{selectedListing.rankingReasons?.join("; ")}</span>
+              </div>
+            )}
+            <a
+              className="primary-action"
+              href={selectedListing.sourceUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              View original listing{" "}
+              <ExternalLink size={18} aria-hidden="true" />
             </a>
           </section>
         )}

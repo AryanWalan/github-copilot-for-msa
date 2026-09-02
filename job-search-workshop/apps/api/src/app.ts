@@ -31,6 +31,8 @@ export function createApp(repository: JobFinderRepository) {
       company: optionalQuery(request.query.company),
       location: optionalQuery(request.query.location),
       sourceId: optionalQuery(request.query.source),
+      benefits: optionalQuery(request.query.benefits),
+      rankByBenefits: request.query.rank === "benefits",
     });
     response.json({ listings });
   });

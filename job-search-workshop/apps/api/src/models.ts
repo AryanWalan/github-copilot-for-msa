@@ -17,11 +17,17 @@ export interface Listing {
   title: string;
   location: string | null;
   summary: string | null;
+  benefits: string | null;
   postedAt: string | null;
   sourceUrl: string;
   firstSeenAt: string;
   lastSeenAt: string;
   status: "active" | "stale" | "unavailable";
+  benefitsScore?: number;
+  benefitsReasons?: string[];
+  locationScore?: number;
+  matchScore?: number;
+  rankingReasons?: string[];
 }
 
 export interface ListingFilters {
@@ -29,6 +35,8 @@ export interface ListingFilters {
   company?: string;
   location?: string;
   sourceId?: string;
+  benefits?: string;
+  rankByBenefits?: boolean;
 }
 
 export interface CollectionRun {

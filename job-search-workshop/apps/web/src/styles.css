@@ -288,9 +288,10 @@ main {
 
 .search-form {
   display: grid;
-  grid-template-columns: 20px minmax(180px, 320px) auto;
+  grid-template-columns: 20px minmax(220px, 1fr) minmax(150px, 220px) auto auto;
   gap: 8px;
   align-items: center;
+  width: min(100%, 820px);
 }
 
 .search-form svg {
@@ -311,6 +312,19 @@ main {
   border-color: var(--teal);
   outline: 2px solid #b5e4db;
   outline-offset: 1px;
+}
+
+.ranking-toggle {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--ink);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.ranking-toggle input {
+  accent-color: var(--teal);
 }
 
 .empty-state {
@@ -365,6 +379,40 @@ td {
   display: inline-flex;
   gap: 6px;
   align-items: center;
+}
+
+.score-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.76rem;
+}
+
+.score-high {
+  color: #137333;
+}
+
+.score-mid {
+  color: #a15c00;
+}
+
+.score-low {
+  color: #b3261e;
+}
+
+.comparison-summary {
+  display: grid;
+  gap: 5px;
+  margin: 18px 0;
+  padding: 14px 16px;
+  color: var(--ink);
+  background: #e8f2ef;
+  border-left: 3px solid var(--teal);
+}
+
+.comparison-summary span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .listing-status {
@@ -486,6 +534,12 @@ td {
 
   .search-form {
     grid-template-columns: 20px minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .search-form input,
+  .ranking-toggle {
+    grid-column: 1 / -1;
   }
 
   .search-form button {

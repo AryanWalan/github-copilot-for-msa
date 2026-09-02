@@ -18,8 +18,15 @@ export async function getSources(): Promise<Source[]> {
   return result.sources;
 }
 
-export async function getListings(search = ""): Promise<Listing[]> {
-  const query = search ? `?search=${encodeURIComponent(search)}` : "";
+export async function getListings(
+  search = "",
+  options: { benefits?: string; rankByBenefits?: boolean } = {},
+): Promise<Listing[]> {
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  if (options.benefits) params.set("benefits", options.benefits);
+  if (options.rankByBenefits) params.set("rank", "benefits");
+  const query = params.size > 0 ? `?${params.toString()}` : "";
   const result = await requestJson<{ listings: Listing[] }>(
     `/api/listings${query}`,
   );

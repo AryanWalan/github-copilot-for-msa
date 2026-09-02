@@ -1,5 +1,5 @@
-import { mkdirSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 
 import Database from "better-sqlite3";
@@ -13,6 +13,35 @@ import type {
 import { candidateSources } from "./sources.js";
 
 type SqlValue = string | number | null;
+
+const BENEFIT_SIGNALS = [
+  ["health insurance", /health insurance|medical insurance/i],
+  ["dental insurance", /dental insurance/i],
+  ["retirement contribution", /retirement|kiwisaver|401\s*\(?k\)?/i],
+  ["paid leave", /paid (?:annual|holiday|parental|family|sick) leave/i],
+  ["flexible work", /flexible (?:work|hours|working)|work[- ]from[- ]home/i],
+  ["professional development", /professional development|learning budget/i],
+  ["bonus or equity", /bonus|equity|stock options?/i],
+] as const;
+
+function benefitsReasons(benefits: string | null): string[] {
+  if (!benefits) return [];
+  return BENEFIT_SIGNALS.filter(([, pattern]) => pattern.test(benefits)).map(
+    ([label]) => label,
+  );
+}
+
+function locationAssessment(location: string | null): {
+  score: number;
+  reason: string;
+} {
+  if (!location) return { score: 0, reason: "Location not provided" };
+  if (/new zealand/i.test(location)) {
+    return { score: 10, reason: "New Zealand location" };
+  }
+  if (/remote/i.test(location)) return { score: 7, reason: "Remote location" };
+  return { score: 0, reason: "Outside New Zealand" };
+}
 
 export class JobFinderRepository {
   private readonly database: Database.Database;
@@ -74,11 +103,15 @@ export class JobFinderRepository {
       clauses.push("source_id = @sourceId");
       parameters.sourceId = filters.sourceId;
     }
+    if (filters.benefits) {
+      clauses.push("benefits LIKE @benefits");
+      parameters.benefits = `%${filters.benefits}%`;
+    }
 
     const where = clauses.length > 0 ? `WHERE ${clauses.join(" AND ")}` : "";
     const rows = this.database
       .prepare(
-        `SELECT id, source_id, company_name, title, location, summary, posted_at,
+        `SELECT id, source_id, company_name, title, location, summary, benefits, posted_at,
                 source_url, first_seen_at, last_seen_at, status
          FROM listings
          ${where}
@@ -86,38 +119,75 @@ export class JobFinderRepository {
       )
       .all(parameters) as Array<Record<string, SqlValue>>;
 
-    return rows.map((row) => ({
+    const listings = rows.map((row) => ({
       id: String(row.id),
       sourceId: String(row.source_id),
       companyName: String(row.company_name),
       title: String(row.title),
       location: row.location === null ? null : String(row.location),
       summary: row.summary === null ? null : String(row.summary),
+      benefits: row.benefits === null ? null : String(row.benefits),
       postedAt: row.posted_at === null ? null : String(row.posted_at),
       sourceUrl: String(row.source_url),
       firstSeenAt: String(row.first_seen_at),
       lastSeenAt: String(row.last_seen_at),
       status: String(row.status) as Listing["status"],
     }));
+
+    if (!filters.rankByBenefits) return listings;
+
+    return listings
+      .map((listing) => {
+        const matchedBenefits = benefitsReasons(listing.benefits);
+        const benefitsScore = Math.round(
+          (matchedBenefits.length / BENEFIT_SIGNALS.length) * 10,
+        );
+        const location = locationAssessment(listing.location);
+        return {
+          ...listing,
+          benefitsScore,
+          benefitsReasons: matchedBenefits,
+          locationScore: location.score,
+          matchScore: Math.round(benefitsScore * 0.6 + location.score * 0.4),
+          rankingReasons: [
+            ...(matchedBenefits.length > 0
+              ? matchedBenefits
+              : ["Benefits not provided or not recognized"]),
+            location.reason,
+          ],
+        };
+      })
+      .sort(
+        (left, right) =>
+          right.matchScore - left.matchScore ||
+          right.benefitsScore - left.benefitsScore ||
+          right.lastSeenAt.localeCompare(left.lastSeenAt) ||
+          left.title.localeCompare(right.title),
+      );
   }
 
   public saveListings(
     source: Source,
-    listings: Array<Pick<Listing, "title" | "location" | "summary" | "sourceUrl">>,
+    listings: Array<
+      Pick<Listing, "title" | "location" | "summary" | "benefits" | "sourceUrl">
+    >,
   ): void {
     const seenAt = new Date().toISOString();
     const save = this.database.prepare(
       `INSERT INTO listings
-         (id, source_id, company_name, title, location, summary, posted_at, source_url, first_seen_at, last_seen_at, status)
-       VALUES (@id, @sourceId, @companyName, @title, @location, @summary, NULL, @sourceUrl, @seenAt, @seenAt, 'active')
+         (id, source_id, company_name, title, location, summary, benefits, posted_at, source_url, first_seen_at, last_seen_at, status)
+       VALUES (@id, @sourceId, @companyName, @title, @location, @summary, @benefits, NULL, @sourceUrl, @seenAt, @seenAt, 'active')
        ON CONFLICT(id) DO UPDATE SET
          title = excluded.title, location = excluded.location, summary = excluded.summary,
+         benefits = excluded.benefits,
          last_seen_at = excluded.last_seen_at, status = 'active'`,
     );
     const transaction = this.database.transaction(() => {
       for (const listing of listings) {
         save.run({
-          id: createHash("sha256").update(`${source.id}:${listing.sourceUrl}`).digest("hex"),
+          id: createHash("sha256")
+            .update(`${source.id}:${listing.sourceUrl}`)
+            .digest("hex"),
           sourceId: source.id,
           companyName: source.name,
           ...listing,
@@ -235,6 +305,7 @@ export class JobFinderRepository {
         title TEXT NOT NULL,
         location TEXT,
         summary TEXT,
+        benefits TEXT,
         posted_at TEXT,
         source_url TEXT NOT NULL,
         first_seen_at TEXT NOT NULL,
@@ -262,6 +333,13 @@ export class JobFinderRepository {
         PRIMARY KEY (run_id, source_id)
       );
     `);
+
+    const listingColumns = this.database
+      .prepare("PRAGMA table_info(listings)")
+      .all() as Array<{ name: string }>;
+    if (!listingColumns.some((column) => column.name === "benefits")) {
+      this.database.exec("ALTER TABLE listings ADD COLUMN benefits TEXT");
+    }
   }
 
   private seedSources(): void {
